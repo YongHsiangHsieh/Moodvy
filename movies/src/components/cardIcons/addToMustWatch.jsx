@@ -8,6 +8,7 @@ const AddToMustWatchIcon = ({ movie }) => {
 
   const handleAddToMustWatch = (e) => {
     e.preventDefault();
+    context.addToMustWatch(movie);
   };
 
   return (
