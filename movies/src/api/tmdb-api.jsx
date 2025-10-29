@@ -1,120 +1,64 @@
+import { apiClient, extractIdFromQueryKey } from "./client";
+
+/**
+ * TMDB API Functions
+ * All functions use the centralized API client for consistent error handling
+ */
+
+/**
+ * Get discover movies (homepage)
+ */
 export const getMovies = () => {
-  return fetch(
-    `https://api.themoviedb.org/3/discover/movie?api_key=${
-      import.meta.env.VITE_TMDB_KEY
-    }&language=en-US&include_adult=false&include_video=false&page=1`
-  )
-    .then((response) => {
-      if (!response.ok) {
-        return response.json().then((error) => {
-          throw new Error(error.status_message || "Something went wrong");
-        });
-      }
-      return response.json();
-    })
-    .catch((error) => {
-      throw error;
-    });
+  return apiClient("/discover/movie", {
+    params: {
+      include_adult: false,
+      include_video: false,
+      page: 1,
+    },
+  });
 };
 
+/**
+ * Get upcoming movies
+ */
 export const getUpcomingMovies = () => {
-  return fetch(
-    `https://api.themoviedb.org/3/movie/upcoming?api_key=${
-      import.meta.env.VITE_TMDB_KEY
-    }&language=en-US&page=1`
-  )
-    .then((response) => {
-      if (!response.ok) {
-        return response.json().then((error) => {
-          throw new Error(error.status_message || "Something went wrong");
-        });
-      }
-      return response.json();
-    })
-    .catch((error) => {
-      throw error;
-    });
+  return apiClient("/movie/upcoming", {
+    params: {
+      page: 1,
+    },
+  });
 };
 
+/**
+ * Get single movie by ID
+ * @param {Object} args - React Query args with queryKey
+ */
 export const getMovie = (args) => {
-  console.log(args);
-  const [, idPart] = args.queryKey;
-  const { id } = idPart;
-  return fetch(
-    `https://api.themoviedb.org/3/movie/${id}?api_key=${
-      import.meta.env.VITE_TMDB_KEY
-    }`
-  )
-    .then((response) => {
-      if (!response.ok) {
-        return response.json().then((error) => {
-          throw new Error(error.status_message || "Something went wrong");
-        });
-      }
-      return response.json();
-    })
-    .catch((error) => {
-      throw error;
-    });
+  const id = extractIdFromQueryKey(args.queryKey);
+  return apiClient(`/movie/${id}`);
 };
 
+/**
+ * Get all movie genres
+ */
 export const getGenres = () => {
-  return fetch(
-    "https://api.themoviedb.org/3/genre/movie/list?api_key=" +
-      import.meta.env.VITE_TMDB_KEY +
-      "&language=en-US"
-  )
-    .then((response) => {
-      if (!response.ok) {
-        return response.json().then((error) => {
-          throw new Error(error.status_message || "Something went wrong");
-        });
-      }
-      return response.json();
-    })
-    .catch((error) => {
-      throw error;
-    });
+  return apiClient("/genre/movie/list");
 };
 
+/**
+ * Get images for a specific movie
+ * @param {Object} args - React Query args with queryKey containing movie ID
+ */
 export const getMovieImages = ({ queryKey }) => {
-  const [, idPart] = queryKey;
-  const { id } = idPart;
-  return fetch(
-    `https://api.themoviedb.org/3/movie/${id}/images?api_key=${
-      import.meta.env.VITE_TMDB_KEY
-    }`
-  )
-    .then((response) => {
-      if (!response.ok) {
-        return response.json().then((error) => {
-          throw new Error(error.status_message || "Something went wrong");
-        });
-      }
-      return response.json();
-    })
-    .catch((error) => {
-      throw error;
-    });
+  const id = extractIdFromQueryKey(queryKey);
+  return apiClient(`/movie/${id}/images`);
 };
 
+/**
+ * Get reviews for a specific movie
+ * @param {Object} args - React Query args with queryKey containing movie ID
+ */
 export const getMovieReviews = ({ queryKey }) => {
-  const [, idPart] = queryKey;
-  const { id } = idPart;
-  return fetch(
-    `https://api.themoviedb.org/3/movie/${id}/reviews?api_key=${
-      import.meta.env.VITE_TMDB_KEY
-    }`
-  )
-    .then((response) => {
-      if (!response.ok) {
-        return response.json().then((error) => {
-          throw new Error(error.status_message || "Something went wrong");
-        });
-      }
-      return response.json();
-    })
-    .catch((error) => {
-      throw error;
-    });
+  const id = extractIdFromQueryKey(queryKey);
+  return apiClient(`/movie/${id}/reviews`);
 };
