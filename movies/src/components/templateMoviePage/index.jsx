@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import Spinner from "../spinner";
-import MovieHeader from "../headerMovie";
+import PageHeader from "../pageHeader";
 import Grid from "@mui/material/Grid";
 import ImageList from "@mui/material/ImageList";
 import ImageListItem from "@mui/material/ImageListItem";
@@ -24,7 +24,7 @@ const TemplateMoviePage = ({ movie, children }) => {
 
   return (
     <>
-      <MovieHeader movie={movie} />
+      <PageHeader movie={movie} />
 
       <Grid container spacing={5} style={{ padding: "15px" }}>
         <Grid size={{ xs: 3 }}>

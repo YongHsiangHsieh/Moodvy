@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Header from "../headerMovieList";
+import PageHeader from "../pageHeader";
 import FilterCard from "../filterMoviesCard";
 import MovieList from "../movieList";
 import Grid from "@mui/material/Grid";
@@ -25,7 +25,7 @@ function MovieListPageTemplate({ movies, title, action }) {
   return (
     <Grid container>
       <Grid size={12}>
-        <Header title={title} />
+        <PageHeader title={title} />
       </Grid>
       <Grid container sx={{ flex: "1 1 500px" }}>
         <Grid
