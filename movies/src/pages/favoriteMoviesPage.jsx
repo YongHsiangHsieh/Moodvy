@@ -3,7 +3,7 @@ import PageTemplate from "../components/templateMovieListPage";
 import { MoviesContext } from "../contexts/moviesContext";
 import { useQueries } from "@tanstack/react-query";
 import { getMovie } from "../api/tmdb-api";
-import Spinner from "../components/spinner";
+import MovieListSkeleton from "../components/skeletons/MovieListSkeleton";
 import RemoveFromFavorites from "../components/cardIcons/removeFromFavorites";
 import WriteReview from "../components/cardIcons/writeReview";
 import { QUERY_KEYS } from "../constants/queryKeys";
@@ -24,7 +24,7 @@ const FavoriteMoviesPage = () => {
   const isPending = favoriteMovieQueries.find((m) => m.isPending === true);
 
   if (isPending) {
-    return <Spinner />;
+    return <MovieListSkeleton />;
   }
 
   // Map genre_ids for filtering compatibility

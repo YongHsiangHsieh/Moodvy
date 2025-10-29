@@ -29,6 +29,11 @@ export default function MovieCard({ movie, action }) {
         display: "flex",
         flexDirection: "column",
         position: "relative",
+        transition: "transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out",
+        "&:hover": {
+          transform: "translateY(-8px)",
+          boxShadow: 6,
+        },
       }}
     >
       {isFavorite && (

@@ -1,9 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
-import Spinner from "../spinner";
 import PageHeader from "../pageHeader";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
+import Skeleton from "@mui/material/Skeleton";
 import ImageList from "@mui/material/ImageList";
 import ImageListItem from "@mui/material/ImageListItem";
 import Typography from "@mui/material/Typography";
@@ -17,7 +17,30 @@ const TemplateMoviePage = ({ movie, children }) => {
   });
 
   if (isPending) {
-    return <Spinner />;
+    return (
+      <Box>
+        <PageHeader movie={movie} />
+        <Grid container spacing={3} sx={{ p: 3 }}>
+          <Grid size={{ xs: 12, sm: 4, md: 3 }}>
+            <Paper elevation={1} sx={{ p: 2 }}>
+              <Skeleton variant="text" width="60%" height={32} sx={{ mb: 2 }} />
+              <Skeleton variant="rectangular" height={400} sx={{ mb: 2 }} />
+              <Skeleton variant="rectangular" height={400} sx={{ mb: 2 }} />
+              <Skeleton variant="rectangular" height={400} />
+            </Paper>
+          </Grid>
+          <Grid size={{ xs: 12, sm: 8, md: 9 }}>
+            <Paper elevation={1} sx={{ p: 3 }}>
+              <Skeleton variant="text" width="40%" height={40} sx={{ mb: 3 }} />
+              <Skeleton variant="text" width="100%" height={30} />
+              <Skeleton variant="text" width="95%" height={30} />
+              <Skeleton variant="text" width="90%" height={30} />
+              <Skeleton variant="rectangular" height={200} sx={{ mt: 3 }} />
+            </Paper>
+          </Grid>
+        </Grid>
+      </Box>
+    );
   }
 
   if (isError) {

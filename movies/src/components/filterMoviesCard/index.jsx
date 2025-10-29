@@ -9,10 +9,10 @@ import SearchIcon from "@mui/icons-material/Search";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import Box from "@mui/material/Box";
+import Skeleton from "@mui/material/Skeleton";
 import img from "../../images/pexels-dziana-hasanbekava-5480827.jpg";
 import { getGenres } from "../../api/tmdb-api";
 import { useQuery } from "@tanstack/react-query";
-import Spinner from "../spinner";
 import { QUERY_KEYS } from "../../constants/queryKeys";
 
 export default function FilterMoviesCard(props) {
@@ -22,11 +22,24 @@ export default function FilterMoviesCard(props) {
   });
 
   if (isPending) {
-    return <Spinner />;
+    return (
+      <Card sx={{ height: "100%" }}>
+        <Skeleton variant="rectangular" height={200} />
+        <CardContent>
+          <Skeleton variant="text" width="60%" height={40} sx={{ mb: 2 }} />
+          <Skeleton variant="rectangular" height={56} sx={{ mb: 2 }} />
+          <Skeleton variant="rectangular" height={56} />
+        </CardContent>
+      </Card>
+    );
   }
 
   if (isError) {
-    return <h1>{error.message}</h1>;
+    return (
+      <Card sx={{ height: "100%", p: 3, textAlign: "center" }}>
+        <Typography color="error">{error.message}</Typography>
+      </Card>
+    );
   }
   const genres = data.genres;
   if (genres[0].name !== "All") {

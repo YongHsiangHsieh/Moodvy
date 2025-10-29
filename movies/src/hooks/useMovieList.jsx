@@ -1,9 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
-import Spinner from "../components/spinner";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import MovieListSkeleton from "../components/skeletons/MovieListSkeleton";
 
 /**
  * Custom hook for fetching a list of movies with loading and error states
- * Handles the common pattern of displaying spinner while loading and error message on error
+ * Handles the common pattern of displaying skeleton loaders while loading and error message on error
  * 
  * @param {Array} queryKey - The query key for React Query caching
  * @param {Function} queryFn - The function to fetch the movies
@@ -18,11 +20,17 @@ export const useMovieList = (queryKey, queryFn) => {
   // Component to render loading/error states
   const MovieListState = () => {
     if (isPending) {
-      return <Spinner />;
+      return <MovieListSkeleton />;
     }
 
     if (isError) {
-      return <h1>{error.message}</h1>;
+      return (
+        <Box sx={{ p: 4, textAlign: "center" }}>
+          <Typography variant="h5" color="error">
+            {error.message}
+          </Typography>
+        </Box>
+      );
     }
 
     return null;

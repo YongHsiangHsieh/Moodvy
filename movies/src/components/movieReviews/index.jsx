@@ -1,5 +1,4 @@
 import { useQuery } from "@tanstack/react-query";
-import Spinner from "../spinner";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -8,6 +7,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
+import Skeleton from "@mui/material/Skeleton";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import Chip from "@mui/material/Chip";
@@ -26,8 +26,34 @@ export default function MovieReviews({ movie }) {
 
   if (isPending) {
     return (
-      <Box sx={{ p: 4, textAlign: "center" }}>
-        <Spinner />
+      <Box sx={{ p: 3 }}>
+        <Box sx={{ mb: 3, display: "flex", alignItems: "center", gap: 2 }}>
+          <Skeleton variant="circular" width={32} height={32} />
+          <Box sx={{ flex: 1 }}>
+            <Skeleton variant="text" width="30%" height={32} />
+            <Skeleton variant="text" width="50%" height={20} />
+          </Box>
+        </Box>
+        <TableContainer component={Paper} elevation={0}>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell><Skeleton variant="text" width={80} /></TableCell>
+                <TableCell><Skeleton variant="text" width={100} /></TableCell>
+                <TableCell align="right"><Skeleton variant="text" width={80} /></TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {[1, 2, 3].map((i) => (
+                <TableRow key={i}>
+                  <TableCell><Skeleton variant="rounded" width={100} height={32} /></TableCell>
+                  <TableCell><Skeleton variant="text" width="90%" /></TableCell>
+                  <TableCell align="right"><Skeleton variant="rounded" width={120} height={36} /></TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
       </Box>
     );
   }
