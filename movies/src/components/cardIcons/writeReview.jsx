@@ -1,11 +1,12 @@
 import React from "react";
 import RateReviewIcon from "@mui/icons-material/RateReview";
 import { Link } from "react-router";
+import { ROUTES } from "../../constants/routes";
 
 const WriteReviewIcon = ({ movie }) => {
   return (
     <Link
-      to={`/reviews/form`}
+      to={ROUTES.REVIEWS.FORM}
       state={{
         movieId: movie.id,
       }}

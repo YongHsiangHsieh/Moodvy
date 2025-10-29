@@ -11,6 +11,7 @@ import { useNavigate } from "react-router";
 import { styled } from "@mui/material/styles";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import { ROUTES } from "../../constants/routes";
 
 const Offset = styled("div")(({ theme }) => theme.mixins.toolbar);
 
@@ -24,10 +25,10 @@ const SiteHeader = () => {
   const navigate = useNavigate();
 
   const menuOptions = [
-    { label: "Home", path: "/" },
-    { label: "Favorites", path: "/movies/favorites" },
-    { label: "Upcoming", path: "/movies/upcoming" },
-    { label: "Option 4", path: "/" },
+    { label: "Home", path: ROUTES.HOME },
+    { label: "Favorites", path: ROUTES.MOVIES.FAVORITES },
+    { label: "Upcoming", path: ROUTES.MOVIES.UPCOMING },
+    { label: "Option 4", path: ROUTES.HOME },
   ];
 
   const handleMenuSelect = (pageURL) => {

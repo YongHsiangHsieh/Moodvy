@@ -5,10 +5,11 @@ import Grid from "@mui/material/Grid";
 import ImageList from "@mui/material/ImageList";
 import ImageListItem from "@mui/material/ImageListItem";
 import { getMovieImages } from "../../api/tmdb-api";
+import { QUERY_KEYS } from "../../constants/queryKeys";
 
 const TemplateMoviePage = ({ movie, children }) => {
   const { data, error, isPending, isError } = useQuery({
-    queryKey: ["images", { id: movie.id }],
+    queryKey: QUERY_KEYS.IMAGES(movie.id),
     queryFn: getMovieImages,
   });
 

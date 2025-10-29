@@ -10,10 +10,12 @@ import Paper from "@mui/material/Paper";
 import { Link } from "react-router";
 import { getMovieReviews } from "../../api/tmdb-api";
 import { excerpt } from "../../utils";
+import { QUERY_KEYS } from "../../constants/queryKeys";
+import { getReviewRoute } from "../../constants/routes";
 
 export default function MovieReviews({ movie }) {
   const { data, error, isPending, isError } = useQuery({
-    queryKey: ["reviews", { id: movie.id }],
+    queryKey: QUERY_KEYS.REVIEWS(movie.id),
     queryFn: getMovieReviews,
   });
 
@@ -46,7 +48,7 @@ export default function MovieReviews({ movie }) {
               <TableCell>{excerpt(r.content)}</TableCell>
               <TableCell>
                 <Link
-                  to={`/reviews/${r.id}`}
+                  to={getReviewRoute(r.id)}
                   state={{
                     review: r,
                     movie: movie,

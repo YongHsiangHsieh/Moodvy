@@ -12,6 +12,7 @@ import img from "../../images/pexels-dziana-hasanbekava-5480827.jpg";
 import { getGenres } from "../../api/tmdb-api";
 import { useQuery } from "@tanstack/react-query";
 import Spinner from "../spinner";
+import { QUERY_KEYS } from "../../constants/queryKeys";
 
 const formControl = {
   margin: 1,
@@ -21,7 +22,7 @@ const formControl = {
 
 export default function FilterMoviesCard(props) {
   const { data, error, isPending, isError } = useQuery({
-    queryKey: ["genres"],
+    queryKey: QUERY_KEYS.GENRES,
     queryFn: getGenres,
   });
 

@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import Spinner from "../components/spinner";
+import { QUERY_KEYS } from "../constants/queryKeys";
 
 /**
  * Custom hook for fetching a single movie by ID with loading and error states
@@ -10,7 +11,7 @@ import Spinner from "../components/spinner";
  */
 export const useMovieById = (id, queryFn) => {
   const { data: movie, error, isPending, isError } = useQuery({
-    queryKey: ["movie", { id }],
+    queryKey: QUERY_KEYS.MOVIE(id),
     queryFn: queryFn,
   });
 

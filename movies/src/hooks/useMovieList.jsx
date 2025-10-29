@@ -5,13 +5,13 @@ import Spinner from "../components/spinner";
  * Custom hook for fetching a list of movies with loading and error states
  * Handles the common pattern of displaying spinner while loading and error message on error
  * 
- * @param {string} queryKey - The query key for React Query caching
+ * @param {Array} queryKey - The query key for React Query caching
  * @param {Function} queryFn - The function to fetch the movies
  * @returns {Object} { movies, isLoading, error, MovieListState }
  */
 export const useMovieList = (queryKey, queryFn) => {
   const { data, error, isPending, isError } = useQuery({
-    queryKey: [queryKey],
+    queryKey: queryKey,
     queryFn: queryFn,
   });
 
