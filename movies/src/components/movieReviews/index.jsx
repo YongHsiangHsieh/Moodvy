@@ -7,6 +7,11 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import Button from "@mui/material/Button";
+import Chip from "@mui/material/Chip";
+import RateReviewIcon from "@mui/icons-material/RateReview";
 import { Link } from "react-router";
 import { getMovieReviews } from "../../api/tmdb-api";
 import { excerpt } from "../../utils/string";
@@ -20,47 +25,99 @@ export default function MovieReviews({ movie }) {
   });
 
   if (isPending) {
-    return <Spinner />;
+    return (
+      <Box sx={{ p: 4, textAlign: "center" }}>
+        <Spinner />
+      </Box>
+    );
   }
 
   if (isError) {
-    return <h1>{error.message}</h1>;
+    return (
+      <Box sx={{ p: 4, textAlign: "center" }}>
+        <Typography color="error">{error.message}</Typography>
+      </Box>
+    );
   }
 
   const reviews = data.results;
 
   return (
-    <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 550 }} aria-label="reviews table">
-        <TableHead>
-          <TableRow>
-            <TableCell>Author</TableCell>
-            <TableCell align="center">Excerpt</TableCell>
-            <TableCell align="right">More</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {reviews.map((r) => (
-            <TableRow key={r.id}>
-              <TableCell component="th" scope="row">
-                {r.author}
-              </TableCell>
-              <TableCell>{excerpt(r.content)}</TableCell>
-              <TableCell>
-                <Link
-                  to={getReviewRoute(r.id)}
-                  state={{
-                    review: r,
-                    movie: movie,
+    <Box sx={{ p: 3 }}>
+      {/* Header */}
+      <Box sx={{ mb: 3, display: "flex", alignItems: "center", gap: 2 }}>
+        <RateReviewIcon color="primary" sx={{ fontSize: 32 }} />
+        <Box>
+          <Typography variant="h5" fontWeight={600}>
+            Reviews
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            {reviews.length} review{reviews.length !== 1 ? "s" : ""} for {movie.title}
+          </Typography>
+        </Box>
+      </Box>
+
+      {reviews.length === 0 ? (
+        <Paper sx={{ p: 4, textAlign: "center", bgcolor: "background.default" }}>
+          <Typography color="text.secondary">
+            No reviews available for this movie yet.
+          </Typography>
+        </Paper>
+      ) : (
+        <TableContainer component={Paper} elevation={0}>
+          <Table sx={{ minWidth: 550 }} aria-label="reviews table">
+            <TableHead>
+              <TableRow>
+                <TableCell sx={{ fontWeight: 600 }}>Author</TableCell>
+                <TableCell sx={{ fontWeight: 600 }}>Excerpt</TableCell>
+                <TableCell align="right" sx={{ fontWeight: 600 }}>
+                  Action
+                </TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {reviews.map((r) => (
+                <TableRow
+                  key={r.id}
+                  sx={{
+                    "&:hover": {
+                      bgcolor: "action.hover",
+                    },
                   }}
                 >
-                  Full Review
-                </Link>
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+                  <TableCell component="th" scope="row">
+                    <Chip
+                      label={r.author}
+                      size="small"
+                      variant="outlined"
+                      color="primary"
+                    />
+                  </TableCell>
+                  <TableCell>
+                    <Typography variant="body2" color="text.secondary">
+                      {excerpt(r.content, 200)}
+                    </Typography>
+                  </TableCell>
+                  <TableCell align="right">
+                    <Link
+                      to={getReviewRoute(r.id)}
+                      state={{
+                        review: r,
+                        movie: movie,
+                      }}
+                      style={{ textDecoration: "none" }}
+                    >
+                      <Button size="small" variant="outlined">
+                        Read Full Review
+                      </Button>
+                    </Link>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      )}
+    </Box>
   );
 }
