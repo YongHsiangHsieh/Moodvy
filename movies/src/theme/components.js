@@ -29,7 +29,7 @@ export const components = {
         borderRadius: 8,
         textTransform: "none",
         fontWeight: 600,
-        padding: "8px 20px",
+        padding: "8px 16px", // 1 spacing unit (8px) x 2
       },
       contained: {
         boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
