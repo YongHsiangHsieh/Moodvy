@@ -59,16 +59,16 @@ const TemplateMoviePage = ({ movie, children }) => {
     <Box>
       <PageHeader movie={movie} />
 
-      <Grid container spacing={3} sx={{ p: 3 }}>
+      <Grid container spacing={{ xs: 2, md: 3 }} sx={{ p: { xs: 2, md: 3 } }}>
         {/* Image Gallery Sidebar */}
         <Grid size={{ xs: 12, sm: 4, md: 3 }}>
           <Paper
             elevation={1}
             sx={{
               p: 2,
-              position: "sticky",
-              top: 80,
-              maxHeight: "calc(100vh - 100px)",
+              position: { xs: "relative", md: "sticky" },
+              top: { md: 80 },
+              maxHeight: { xs: "auto", md: "calc(100vh - 100px)" },
               overflow: "hidden",
             }}
           >

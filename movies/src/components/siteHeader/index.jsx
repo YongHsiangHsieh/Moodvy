@@ -74,11 +74,14 @@ const SiteHeader = () => {
           {isMobile ? (
             <>
               <IconButton
-                aria-label="menu"
+                aria-label="Open navigation menu"
                 aria-controls="menu-appbar"
                 aria-haspopup="true"
+                aria-expanded={open ? "true" : "false"}
                 onClick={handleMenu}
                 color="inherit"
+                size="large"
+                sx={{ minWidth: 48, minHeight: 48 }}
               >
                 <MenuIcon />
               </IconButton>
@@ -114,6 +117,8 @@ const SiteHeader = () => {
                   key={opt.label}
                   color="inherit"
                   onClick={() => handleMenuSelect(opt.path)}
+                  aria-label={`Navigate to ${opt.label}`}
+                  sx={{ minHeight: 48, px: 2 }}
                 >
                   {opt.label}
                 </Button>

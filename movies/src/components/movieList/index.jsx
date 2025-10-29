@@ -7,7 +7,7 @@ const MovieList = (props) => {
     <Grid
       key={m.id}
       size={{ xs: 12, sm: 6, md: 4, lg: 3, xl: 2 }}
-      sx={{ padding: "20px" }}
+      sx={{ p: { xs: 2, md: 2.5 } }}
     >
       <Movie key={m.id} movie={m} action={props.action} />
     </Grid>

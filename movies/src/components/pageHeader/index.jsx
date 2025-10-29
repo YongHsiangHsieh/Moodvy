@@ -31,8 +31,8 @@ const PageHeader = ({ title, movie, showNavigation = true }) => {
         display: "flex",
         alignItems: "center",
         justifyContent: "space-between",
-        px: 3,
-        py: 2,
+        px: { xs: 2, md: 3 },
+        py: { xs: 1.5, md: 2 },
         mb: hasMovieDetails ? 0 : 3,
         background: (theme) =>
           hasMovieDetails
@@ -43,9 +43,13 @@ const PageHeader = ({ title, movie, showNavigation = true }) => {
       {showNavigation && (
         <Tooltip title="Go back">
           <IconButton
-            aria-label="go back"
+            aria-label="Go back to previous page"
             onClick={() => navigate(-1)}
-            sx={{ mr: 2 }}
+            sx={{ 
+              mr: { xs: 1, md: 2 },
+              minWidth: 48,
+              minHeight: 48,
+            }}
           >
             <ArrowBackIcon />
           </IconButton>
@@ -57,7 +61,10 @@ const PageHeader = ({ title, movie, showNavigation = true }) => {
           variant={hasMovieDetails ? "h4" : "h5"}
           component="h1"
           fontWeight={700}
-          sx={{ mb: hasMovieDetails && movie.tagline ? 1 : 0 }}
+          sx={{ 
+            mb: hasMovieDetails && movie.tagline ? 1 : 0,
+            fontSize: { xs: hasMovieDetails ? "1.5rem" : "1.25rem", md: undefined },
+          }}
         >
           {displayTitle}
           {hasMovieDetails && movie.homepage && (
@@ -67,7 +74,12 @@ const PageHeader = ({ title, movie, showNavigation = true }) => {
                 href={movie.homepage}
                 target="_blank"
                 rel="noopener noreferrer"
-                sx={{ ml: 1 }}
+                aria-label={`Visit ${movie.title} official website`}
+                sx={{ 
+                  ml: 1,
+                  minWidth: 44,
+                  minHeight: 44,
+                }}
                 size="small"
               >
                 <HomeIcon color="primary" />
@@ -81,6 +93,10 @@ const PageHeader = ({ title, movie, showNavigation = true }) => {
             variant="subtitle1"
             color="text.secondary"
             fontStyle="italic"
+            sx={{ 
+              fontSize: { xs: "0.875rem", md: "1rem" },
+              display: { xs: "none", sm: "block" },
+            }}
           >
             "{movie.tagline}"
           </Typography>
@@ -90,9 +106,13 @@ const PageHeader = ({ title, movie, showNavigation = true }) => {
       {showNavigation && (
         <Tooltip title="Go forward">
           <IconButton
-            aria-label="go forward"
+            aria-label="Go forward to next page"
             onClick={() => navigate(+1)}
-            sx={{ ml: 2 }}
+            sx={{ 
+              ml: { xs: 1, md: 2 },
+              minWidth: 48,
+              minHeight: 48,
+            }}
           >
             <ArrowForwardIcon />
           </IconButton>

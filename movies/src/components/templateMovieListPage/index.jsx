@@ -31,7 +31,7 @@ function MovieListPageTemplate({ movies, title, action }) {
         <Grid
           key="find"
           size={{ xs: 12, sm: 6, md: 4, lg: 3, xl: 2 }}
-          sx={{ padding: "20px" }}
+          sx={{ p: { xs: 2, md: 2.5 } }}
         >
           <FilterCard
             onUserInput={handleChange}

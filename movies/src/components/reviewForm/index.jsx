@@ -126,6 +126,10 @@ const ReviewForm = ({ movie }) => {
                     autoFocus
                     error={!!errors.author}
                     helperText={errors.author?.message}
+                    inputProps={{
+                      "aria-label": "Enter your name for the review",
+                      "aria-required": "true",
+                    }}
                   />
                 )}
               />
@@ -148,6 +152,9 @@ const ReviewForm = ({ movie }) => {
                     helperText="How would you rate this movie?"
                     InputProps={{
                       startAdornment: <StarIcon sx={{ color: "custom.rating", mr: 1 }} />,
+                    }}
+                    inputProps={{
+                      "aria-label": "Select movie rating",
                     }}
                   >
                     {ratings.map((option) => (
@@ -184,6 +191,10 @@ const ReviewForm = ({ movie }) => {
                     minRows={8}
                     error={!!errors.review}
                     helperText={errors.review?.message || "Share your detailed thoughts (minimum 10 characters)"}
+                    inputProps={{
+                      "aria-label": "Write your detailed movie review",
+                      "aria-required": "true",
+                    }}
                   />
                 )}
               />

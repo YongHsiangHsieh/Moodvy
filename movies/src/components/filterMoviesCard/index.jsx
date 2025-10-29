@@ -101,6 +101,9 @@ export default function FilterMoviesCard(props) {
           type="search"
           value={props.titleFilter}
           onChange={handleTextChange}
+          inputProps={{
+            "aria-label": "Search movies by title",
+          }}
           sx={{ mb: 2 }}
         />
 
@@ -112,6 +115,9 @@ export default function FilterMoviesCard(props) {
             value={props.genreFilter}
             onChange={handleGenreChange}
             label="Genre"
+            inputProps={{
+              "aria-label": "Filter movies by genre",
+            }}
           >
             {genres.map((genre) => (
               <MenuItem key={genre.id} value={genre.id}>

@@ -111,8 +111,13 @@ export default function MovieCard({ movie, action }) {
       <CardActions sx={{ p: 2, pt: 0, gap: 1 }}>
         {action(movie)}
 
-        <Link to={getMovieRoute(movie.id)} style={{ marginLeft: "auto" }}>
-          <Button variant="contained" size="small">
+        <Link to={getMovieRoute(movie.id)} style={{ marginLeft: "auto", textDecoration: "none" }}>
+          <Button 
+            variant="contained" 
+            size="small"
+            aria-label={`View more information about ${movie.title}`}
+            sx={{ minHeight: { xs: 44, sm: 36 } }}
+          >
             More Info
           </Button>
         </Link>
