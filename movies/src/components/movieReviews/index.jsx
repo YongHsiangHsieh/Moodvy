@@ -9,7 +9,7 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { Link } from "react-router";
 import { getMovieReviews } from "../../api/tmdb-api";
-import { excerpt } from "../../utils";
+import { excerpt } from "../../utils/string";
 import { QUERY_KEYS } from "../../constants/queryKeys";
 import { getReviewRoute } from "../../constants/routes";
 

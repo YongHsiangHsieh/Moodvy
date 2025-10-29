@@ -7,6 +7,7 @@ import Spinner from "../components/spinner";
 import RemoveFromFavorites from "../components/cardIcons/removeFromFavorites";
 import WriteReview from "../components/cardIcons/writeReview";
 import { QUERY_KEYS } from "../constants/queryKeys";
+import { mapMovieGenres } from "../utils/movie";
 
 const FavoriteMoviesPage = () => {
   const { favorites: movieIds } = useContext(MoviesContext);
@@ -27,11 +28,7 @@ const FavoriteMoviesPage = () => {
   }
 
   // Map genre_ids for filtering compatibility
-  const movies = favoriteMovieQueries.map((q) => {
-    const movie = q.data;
-    movie.genre_ids = movie.genres.map((g) => g.id);
-    return movie;
-  });
+  const movies = favoriteMovieQueries.map((q) => mapMovieGenres(q.data));
 
   return (
     <PageTemplate
