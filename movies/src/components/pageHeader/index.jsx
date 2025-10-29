@@ -3,8 +3,10 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import HomeIcon from "@mui/icons-material/Home";
 import Paper from "@mui/material/Paper";
+import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
+import Tooltip from "@mui/material/Tooltip";
 import { useNavigate } from "react-router";
 
 /**
@@ -24,41 +26,77 @@ const PageHeader = ({ title, movie, showNavigation = true }) => {
 
   return (
     <Paper
-      component="div"
+      elevation={1}
       sx={{
         display: "flex",
-        justifyContent: "space-around",
-        flexWrap: "wrap",
-        padding: 1.5,
-        margin: 0,
-        marginBottom: hasMovieDetails ? 0 : 1.5,
+        alignItems: "center",
+        justifyContent: "space-between",
+        px: 3,
+        py: 2,
+        mb: hasMovieDetails ? 0 : 3,
+        background: (theme) =>
+          hasMovieDetails
+            ? `linear-gradient(135deg, ${theme.palette.primary.main}15 0%, ${theme.palette.secondary.main}15 100%)`
+            : theme.palette.background.paper,
       }}
     >
       {showNavigation && (
-        <IconButton aria-label="go back" onClick={() => navigate(-1)}>
-          <ArrowBackIcon color="primary" fontSize="large" />
-        </IconButton>
+        <Tooltip title="Go back">
+          <IconButton
+            aria-label="go back"
+            onClick={() => navigate(-1)}
+            sx={{ mr: 2 }}
+          >
+            <ArrowBackIcon />
+          </IconButton>
+        </Tooltip>
       )}
 
-      <Typography variant="h4" component="h3">
-        {displayTitle}
-        {hasMovieDetails && movie.homepage && (
-          <a href={movie.homepage}>
-            <HomeIcon color="primary" />
-          </a>
-        )}
+      <Box sx={{ flexGrow: 1, textAlign: "center" }}>
+        <Typography
+          variant={hasMovieDetails ? "h4" : "h5"}
+          component="h1"
+          fontWeight={700}
+          sx={{ mb: hasMovieDetails && movie.tagline ? 1 : 0 }}
+        >
+          {displayTitle}
+          {hasMovieDetails && movie.homepage && (
+            <Tooltip title="Visit official homepage">
+              <IconButton
+                component="a"
+                href={movie.homepage}
+                target="_blank"
+                rel="noopener noreferrer"
+                sx={{ ml: 1 }}
+                size="small"
+              >
+                <HomeIcon color="primary" />
+              </IconButton>
+            </Tooltip>
+          )}
+        </Typography>
+
         {hasMovieDetails && movie.tagline && (
-          <>
-            <br />
-            <span style={{ fontSize: "1.5rem" }}>{`   "${movie.tagline}"`}</span>
-          </>
+          <Typography
+            variant="subtitle1"
+            color="text.secondary"
+            fontStyle="italic"
+          >
+            "{movie.tagline}"
+          </Typography>
         )}
-      </Typography>
+      </Box>
 
       {showNavigation && (
-        <IconButton aria-label="go forward" onClick={() => navigate(+1)}>
-          <ArrowForwardIcon color="primary" fontSize="large" />
-        </IconButton>
+        <Tooltip title="Go forward">
+          <IconButton
+            aria-label="go forward"
+            onClick={() => navigate(+1)}
+            sx={{ ml: 2 }}
+          >
+            <ArrowForwardIcon />
+          </IconButton>
+        </Tooltip>
       )}
     </Paper>
   );

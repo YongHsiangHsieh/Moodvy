@@ -4,6 +4,7 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import Button from "@mui/material/Button";
+import Box from "@mui/material/Box";
 import MenuIcon from "@mui/icons-material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
@@ -42,14 +43,34 @@ const SiteHeader = () => {
 
   return (
     <>
-      <AppBar position="fixed" color="secondary">
+      <AppBar
+        position="fixed"
+        color="primary"
+        elevation={2}
+        sx={{
+          background: (theme) =>
+            `linear-gradient(90deg, ${theme.palette.primary.main} 0%, ${theme.palette.primary.dark} 100%)`,
+        }}
+      >
         <Toolbar>
-          <Typography variant="h4" sx={{ flexGrow: 1 }}>
-            TMDB Client
+          <Typography
+            variant="h5"
+            component="h1"
+            sx={{ fontWeight: 700, letterSpacing: 1 }}
+          >
+            🎬 Moodvy
           </Typography>
-          <Typography variant="h6" sx={{ flexGrow: 1 }}>
-            All you ever wanted to know about Movies!
+          <Typography
+            variant="body2"
+            sx={{
+              ml: 3,
+              display: { xs: "none", md: "block" },
+              opacity: 0.9,
+            }}
+          >
+            Discover Your Next Favorite Movie
           </Typography>
+          <Box sx={{ flexGrow: 1 }} />
           {isMobile ? (
             <>
               <IconButton
