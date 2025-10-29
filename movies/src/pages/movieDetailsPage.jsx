@@ -3,42 +3,20 @@ import { useParams } from "react-router";
 import MovieDetails from "../components/movieDetails/";
 import PageTemplate from "../components/templateMoviePage";
 import { getMovie } from "../api/tmdb-api";
-import { useQuery } from "@tanstack/react-query";
-import Spinner from "../components/spinner";
-// import useMovie from "../hooks/useMovie";   Redundant
+import { useMovieById } from "../hooks/useMovieById.jsx";
 
-const MoviePage = (props) => {
+const MoviePage = () => {
   const { id } = useParams();
-  const {
-    data: movie,
-    error,
-    isPending,
-    isError,
-  } = useQuery({
-    queryKey: ["movie", { id: id }],
-    queryFn: getMovie,
-  });
+  const { movie, MovieState } = useMovieById(id, getMovie);
 
-  if (isPending) {
-    return <Spinner />;
-  }
-
-  if (isError) {
-    return <h1>{error.message}</h1>;
-  }
+  // Show loading or error state if needed
+  const stateComponent = MovieState();
+  if (stateComponent) return stateComponent;
 
   return (
-    <>
-      {movie ? (
-        <>
-          <PageTemplate movie={movie}>
-            <MovieDetails movie={movie} />
-          </PageTemplate>
-        </>
-      ) : (
-        <p>Waiting for movie details</p>
-      )}
-    </>
+    <PageTemplate movie={movie}>
+      <MovieDetails movie={movie} />
+    </PageTemplate>
   );
 };
 

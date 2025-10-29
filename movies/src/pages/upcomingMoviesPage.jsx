@@ -1,38 +1,23 @@
 import React from "react";
 import { getUpcomingMovies } from "../api/tmdb-api";
 import PageTemplate from "../components/templateMovieListPage";
-import { useQuery } from "@tanstack/react-query";
-import Spinner from "../components/spinner";
+import { useMovieList } from "../hooks/useMovieList.jsx";
 import AddToMustWatchIcon from "../components/cardIcons/addToMustWatch";
 
-const UpcomingMoviesPage = (props) => {
-  const { data, error, isPending, isError } = useQuery({
-    queryKey: ["upcoming"],
-    queryFn: getUpcomingMovies,
-  });
+const UpcomingMoviesPage = () => {
+  const { movies, MovieListState } = useMovieList("upcoming", getUpcomingMovies);
 
-  if (isPending) {
-    return <Spinner />;
-  }
-
-  if (isError) {
-    return <h1>{error.message}</h1>;
-  }
-
-  const movies = data.results;
-
-  const favorites = movies.filter((m) => m.favorite);
-  localStorage.setItem("favorites", JSON.stringify(favorites));
-  const addToFavorites = (movieId) => true;
+  // Show loading or error state if needed
+  const stateComponent = MovieListState();
+  if (stateComponent) return stateComponent;
 
   return (
     <PageTemplate
       title="Upcoming Movies"
       movies={movies}
-      action={(movie) => {
-        return <AddToMustWatchIcon movie={movie} />;
-      }}
+      action={(movie) => <AddToMustWatchIcon movie={movie} />}
     />
   );
 };
+
 export default UpcomingMoviesPage;
