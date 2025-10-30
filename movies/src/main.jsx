@@ -7,6 +7,9 @@ import HomePage from "./pages/homePage";
 import MoviePage from "./pages/movieDetailsPage";
 import FavoriteMoviesPage from "./pages/favoriteMoviesPage";
 import MovieReviewPage from "./pages/movieReviewPage";
+import PopularMoviesPage from "./pages/popularMoviesPage";
+import TopRatedMoviesPage from "./pages/topRatedMoviesPage";
+import NowPlayingMoviesPage from "./pages/nowPlayingMoviesPage";
 import SiteHeader from "./components/siteHeader";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
@@ -35,12 +38,33 @@ const App = () => {
           <SiteHeader />
           <MoviesContextProvider>
             <Routes>
-              <Route path={ROUTES.MOVIES.FAVORITES} element={<FavoriteMoviesPage />} />
-              <Route path={ROUTES.MOVIES.UPCOMING} element={<UpcomingMoviesPage />} />
+              <Route
+                path={ROUTES.MOVIES.FAVORITES}
+                element={<FavoriteMoviesPage />}
+              />
+              <Route
+                path={ROUTES.MOVIES.UPCOMING}
+                element={<UpcomingMoviesPage />}
+              />
+              <Route
+                path={ROUTES.MOVIES.POPULAR}
+                element={<PopularMoviesPage />}
+              />
+              <Route
+                path={ROUTES.MOVIES.TOP_RATED}
+                element={<TopRatedMoviesPage />}
+              />
+              <Route
+                path={ROUTES.MOVIES.NOW_PLAYING}
+                element={<NowPlayingMoviesPage />}
+              />
               <Route path={ROUTES.REVIEWS.VIEW} element={<MovieReviewPage />} />
               <Route path={ROUTES.MOVIES.DETAILS} element={<MoviePage />} />
               <Route path={ROUTES.HOME} element={<HomePage />} />
-              <Route path={ROUTES.REVIEWS.FORM} element={<AddMovieReviewPage />} />
+              <Route
+                path={ROUTES.REVIEWS.FORM}
+                element={<AddMovieReviewPage />}
+              />
               <Route path="*" element={<Navigate to={ROUTES.HOME} />} />
             </Routes>
           </MoviesContextProvider>
