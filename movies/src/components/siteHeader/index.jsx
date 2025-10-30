@@ -29,7 +29,9 @@ const SiteHeader = () => {
     { label: "Home", path: ROUTES.HOME },
     { label: "Favorites", path: ROUTES.MOVIES.FAVORITES },
     { label: "Upcoming", path: ROUTES.MOVIES.UPCOMING },
-    { label: "Option 4", path: ROUTES.HOME },
+    { label: "Popular", path: ROUTES.MOVIES.POPULAR },
+    { label: "Top Rated", path: ROUTES.MOVIES.TOP_RATED },
+    { label: "In Theaters", path: ROUTES.MOVIES.NOW_PLAYING },
   ];
 
   const handleMenuSelect = (pageURL) => {
