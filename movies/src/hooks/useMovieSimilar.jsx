@@ -3,6 +3,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { QUERY_KEYS } from "../constants/queryKeys";
 import MovieCardSkeleton from "../components/skeletons/MovieCardSkeleton";
+import HorizontalScrollContainer from "../components/horizontalScrollContainer";
 
 /**
  * Custom hook for fetching similar movies with loading and error states
@@ -21,20 +22,13 @@ export const useMovieSimilar = (movieId, queryFn) => {
   const SimilarMoviesState = () => {
     if (isPending) {
       return (
-        <Box
-          sx={{
-            display: "flex",
-            gap: 2,
-            overflowX: "auto",
-            pb: 2,
-          }}
-        >
+        <HorizontalScrollContainer>
           {[1, 2, 3, 4, 5].map((i) => (
             <Box key={i} sx={{ minWidth: 200, flexShrink: 0 }}>
               <MovieCardSkeleton />
             </Box>
           ))}
-        </Box>
+        </HorizontalScrollContainer>
       );
     }
 

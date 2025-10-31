@@ -3,6 +3,7 @@ import Box from "@mui/material/Box";
 import Skeleton from "@mui/material/Skeleton";
 import Typography from "@mui/material/Typography";
 import { QUERY_KEYS } from "../constants/queryKeys";
+import HorizontalScrollContainer from "../components/horizontalScrollContainer";
 
 /**
  * Custom hook for fetching movie credits (cast and crew) with loading and error states
@@ -21,7 +22,7 @@ export const useMovieCredits = (movieId, queryFn) => {
   const MovieCreditsState = () => {
     if (isPending) {
       return (
-        <Box sx={{ display: "flex", gap: 2, mb: 3, overflowX: "auto" }}>
+        <HorizontalScrollContainer sx={{ mb: 3 }}>
           {[1, 2, 3, 4, 5].map((i) => (
             <Box key={i} sx={{ minWidth: 120, flexShrink: 0 }}>
               <Skeleton variant="circular" width={120} height={120} />
@@ -29,7 +30,7 @@ export const useMovieCredits = (movieId, queryFn) => {
               <Skeleton variant="text" width="80%" />
             </Box>
           ))}
-        </Box>
+        </HorizontalScrollContainer>
       );
     }
 

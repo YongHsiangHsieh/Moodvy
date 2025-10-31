@@ -15,18 +15,28 @@ import Drawer from "@mui/material/Drawer";
 import Divider from "@mui/material/Divider";
 import MovieReviews from "../movieReviews";
 import { useMovieCredits } from "../../hooks/useMovieCredits";
+import { useMovieRecommendations } from "../../hooks/useMovieRecommendations";
 import CastCard from "../castCard";
-import { getMovieCredits } from "../../api/tmdb-api";
+import CompactMovieCard from "../compactMovieCard";
+import HorizontalScrollContainer from "../horizontalScrollContainer";
+import { getMovieCredits, getMovieRecommendations } from "../../api/tmdb-api";
 
 const MovieDetails = ({ movie }) => {
   const [drawerOpen, setDrawerOpen] = useState(false);
 
-  // Fetch cast data using our custom hook
+  // Fetch cast data
   const {
     cast,
     isLoading: castLoading,
     MovieCreditsState,
   } = useMovieCredits(movie.id, getMovieCredits);
+
+  // Fetch recommendations data
+  const {
+    movies: recommendations,
+    isLoading: recommendationsLoading,
+    RecommendationsState,
+  } = useMovieRecommendations(movie.id, getMovieRecommendations);
 
   return (
     <Box>
@@ -46,45 +56,21 @@ const MovieDetails = ({ movie }) => {
 
       <Divider sx={{ my: 3 }} />
 
-      {/* Cast Section - NEW! */}
+      {/* Cast Section */}
       <Box sx={{ mb: 4 }}>
         <Typography variant="h6" fontWeight={600} gutterBottom>
           🎭 Cast
         </Typography>
 
         {castLoading ? (
-          // Show skeleton loaders while fetching
           <MovieCreditsState />
         ) : cast.length > 0 ? (
-          // Horizontal scrollable cast cards
-          <Box
-            sx={{
-              display: "flex",
-              gap: 2,
-              overflowX: "auto",
-              pb: 2,
-              "&::-webkit-scrollbar": {
-                height: 8,
-              },
-              "&::-webkit-scrollbar-track": {
-                backgroundColor: "action.hover",
-                borderRadius: 4,
-              },
-              "&::-webkit-scrollbar-thumb": {
-                backgroundColor: "action.active",
-                borderRadius: 4,
-                "&:hover": {
-                  backgroundColor: "action.selected",
-                },
-              },
-            }}
-          >
+          <HorizontalScrollContainer>
             {cast.slice(0, 10).map((actor) => (
               <CastCard key={actor.id} actor={actor} />
             ))}
-          </Box>
+          </HorizontalScrollContainer>
         ) : (
-          // Fallback if no cast data
           <Typography variant="body2" color="text.secondary">
             No cast information available
           </Typography>
@@ -183,6 +169,32 @@ const MovieDetails = ({ movie }) => {
             </Box>
           </Stack>
         </Paper>
+      </Box>
+
+      <Divider sx={{ my: 3 }} />
+
+      {/* Recommendations Section */}
+      <Box sx={{ mb: 4 }}>
+        <Typography variant="h6" fontWeight={600} gutterBottom>
+          💡 You Might Also Like
+        </Typography>
+
+        {recommendationsLoading ? (
+          <RecommendationsState />
+        ) : recommendations.length > 0 ? (
+          <HorizontalScrollContainer>
+            {recommendations.slice(0, 10).map((recommendedMovie) => (
+              <CompactMovieCard
+                key={recommendedMovie.id}
+                movie={recommendedMovie}
+              />
+            ))}
+          </HorizontalScrollContainer>
+        ) : (
+          <Typography variant="body2" color="text.secondary">
+            No recommendations available
+          </Typography>
+        )}
       </Box>
 
       {/* Reviews FAB */}
