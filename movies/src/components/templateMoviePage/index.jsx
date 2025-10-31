@@ -9,6 +9,7 @@ import ImageListItem from "@mui/material/ImageListItem";
 import Typography from "@mui/material/Typography";
 import { getMovieImages } from "../../api/tmdb-api";
 import { QUERY_KEYS } from "../../constants/queryKeys";
+import { getMoviePosterUrl } from "../../utils/movie";
 
 const TemplateMoviePage = ({ movie, children }) => {
   const { data, error, isPending, isError } = useQuery({
@@ -98,7 +99,7 @@ const TemplateMoviePage = ({ movie, children }) => {
                   }}
                 >
                   <img
-                    src={`https://image.tmdb.org/t/p/w500/${image.file_path}`}
+                    src={getMoviePosterUrl(image.file_path)}
                     alt={`${movie.title} poster`}
                     loading="lazy"
                     style={{

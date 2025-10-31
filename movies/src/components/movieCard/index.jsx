@@ -16,6 +16,7 @@ import Chip from "@mui/material/Chip";
 import img from "../../images/film-poster-placeholder.png";
 import { Link } from "react-router";
 import { getMovieRoute } from "../../constants/routes";
+import { getMoviePosterUrl } from "../../utils/movie";
 
 export default function MovieCard({ movie, action }) {
   const { favorites } = useContext(MoviesContext);
@@ -79,11 +80,7 @@ export default function MovieCard({ movie, action }) {
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}
-        image={
-          movie.poster_path
-            ? `https://image.tmdb.org/t/p/w500/${movie.poster_path}`
-            : img
-        }
+        image={getMoviePosterUrl(movie.poster_path) || img}
         title={movie.title}
       />
 
@@ -111,9 +108,12 @@ export default function MovieCard({ movie, action }) {
       <CardActions sx={{ p: 2, pt: 0, gap: 1 }}>
         {action(movie)}
 
-        <Link to={getMovieRoute(movie.id)} style={{ marginLeft: "auto", textDecoration: "none" }}>
-          <Button 
-            variant="contained" 
+        <Link
+          to={getMovieRoute(movie.id)}
+          style={{ marginLeft: "auto", textDecoration: "none" }}
+        >
+          <Button
+            variant="contained"
             size="small"
             aria-label={`View more information about ${movie.title}`}
             sx={{ minHeight: { xs: 44, sm: 36 } }}
