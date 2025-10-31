@@ -10,6 +10,7 @@ import MovieReviewPage from "./pages/movieReviewPage";
 import PopularMoviesPage from "./pages/popularMoviesPage";
 import TopRatedMoviesPage from "./pages/topRatedMoviesPage";
 import NowPlayingMoviesPage from "./pages/nowPlayingMoviesPage";
+import ActorDetailsPage from "./pages/actorDetailsPage";
 import SiteHeader from "./components/siteHeader";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
@@ -60,6 +61,10 @@ const App = () => {
               />
               <Route path={ROUTES.REVIEWS.VIEW} element={<MovieReviewPage />} />
               <Route path={ROUTES.MOVIES.DETAILS} element={<MoviePage />} />
+              <Route
+                path={ROUTES.ACTORS.DETAILS}
+                element={<ActorDetailsPage />}
+              />
               <Route path={ROUTES.HOME} element={<HomePage />} />
               <Route
                 path={ROUTES.REVIEWS.FORM}

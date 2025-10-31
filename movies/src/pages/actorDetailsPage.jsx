@@ -10,13 +10,12 @@ const ActorDetailsPage = () => {
   const { id } = useParams();
 
   // Fetch actor biographical information
-  const { person, PersonState } = usePersonDetails(id, () =>
-    getPersonDetails(id)
-  );
+  const { person, PersonState } = usePersonDetails(id, getPersonDetails);
 
   // Fetch actor's filmography
-  const { movies, FilmographyState } = usePersonMovieCredits(id, () =>
-    getPersonMovieCredits(id)
+  const { movies, FilmographyState } = usePersonMovieCredits(
+    id,
+    getPersonMovieCredits
   );
 
   // Show loading or error state for person details
