@@ -8,11 +8,14 @@ import Divider from "@mui/material/Divider";
 import CakeIcon from "@mui/icons-material/Cake";
 import PlaceIcon from "@mui/icons-material/Place";
 import PersonIcon from "@mui/icons-material/Person";
-import { getActorProfileUrl } from "../../utils/movie";
+import { getActorProfileUrl, sortMoviesByPopularity } from "../../utils/movie";
 import CompactMovieCard from "../compactMovieCard";
 import HorizontalScrollContainer from "../horizontalScrollContainer";
 
 const ActorDetails = ({ person, movies, FilmographyState }) => {
+  // Sort movies by popularity to show most famous roles first
+  const sortedMovies = sortMoviesByPopularity(movies);
+
   return (
     <Box
       sx={{
@@ -152,9 +155,9 @@ const ActorDetails = ({ person, movies, FilmographyState }) => {
           Known For
         </Typography>
 
-        {movies.length > 0 ? (
+        {sortedMovies.length > 0 ? (
           <HorizontalScrollContainer>
-            {movies.slice(0, 20).map((movie) => (
+            {sortedMovies.slice(0, 20).map((movie) => (
               <Box key={movie.id} sx={{ minWidth: 150, flexShrink: 0 }}>
                 <CompactMovieCard movie={movie} />
               </Box>
@@ -164,7 +167,7 @@ const ActorDetails = ({ person, movies, FilmographyState }) => {
           <FilmographyState />
         )}
 
-        {movies.length === 0 && !movies.length && (
+        {sortedMovies.length === 0 && (
           <Typography variant="body2" color="text.secondary">
             No filmography available.
           </Typography>

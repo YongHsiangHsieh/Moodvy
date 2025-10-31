@@ -93,3 +93,39 @@ export function getMovieYear(releaseDate) {
   if (!releaseDate) return "N/A";
   return releaseDate.split("-")[0];
 }
+
+/**
+ * Sort movies by popularity (highest first)
+ * @param {Array} movies - Array of movie objects
+ * @returns {Array} Sorted array of movies
+ */
+export function sortMoviesByPopularity(movies) {
+  if (!Array.isArray(movies)) return [];
+  return [...movies].sort((a, b) => (b.popularity || 0) - (a.popularity || 0));
+}
+
+/**
+ * Sort movies by release date (newest first)
+ * @param {Array} movies - Array of movie objects
+ * @returns {Array} Sorted array of movies
+ */
+export function sortMoviesByReleaseDate(movies) {
+  if (!Array.isArray(movies)) return [];
+  return [...movies].sort((a, b) => {
+    const dateA = new Date(a.release_date || 0);
+    const dateB = new Date(b.release_date || 0);
+    return dateB - dateA;
+  });
+}
+
+/**
+ * Sort movies by rating (highest first)
+ * @param {Array} movies - Array of movie objects
+ * @returns {Array} Sorted array of movies
+ */
+export function sortMoviesByRating(movies) {
+  if (!Array.isArray(movies)) return [];
+  return [...movies].sort(
+    (a, b) => (b.vote_average || 0) - (a.vote_average || 0)
+  );
+}
