@@ -16,10 +16,15 @@ import Divider from "@mui/material/Divider";
 import MovieReviews from "../movieReviews";
 import { useMovieCredits } from "../../hooks/useMovieCredits";
 import { useMovieRecommendations } from "../../hooks/useMovieRecommendations";
+import { useMovieSimilar } from "../../hooks/useMovieSimilar";
 import CastCard from "../castCard";
 import CompactMovieCard from "../compactMovieCard";
 import HorizontalScrollContainer from "../horizontalScrollContainer";
-import { getMovieCredits, getMovieRecommendations } from "../../api/tmdb-api";
+import {
+  getMovieCredits,
+  getMovieRecommendations,
+  getMovieSimilar,
+} from "../../api/tmdb-api";
 
 const MovieDetails = ({ movie }) => {
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -37,6 +42,13 @@ const MovieDetails = ({ movie }) => {
     isLoading: recommendationsLoading,
     RecommendationsState,
   } = useMovieRecommendations(movie.id, getMovieRecommendations);
+
+  // Fetch similar movies data
+  const {
+    movies: similar,
+    isLoading: similarLoading,
+    SimilarMoviesState,
+  } = useMovieSimilar(movie.id, getMovieSimilar);
 
   return (
     <Box>
@@ -193,6 +205,27 @@ const MovieDetails = ({ movie }) => {
         ) : (
           <Typography variant="body2" color="text.secondary">
             No recommendations available
+          </Typography>
+        )}
+      </Box>
+
+      {/* Similar Movies Section */}
+      <Box sx={{ mb: 4 }}>
+        <Typography variant="h6" fontWeight={600} gutterBottom>
+          🎬 Similar Movies
+        </Typography>
+
+        {similarLoading ? (
+          <SimilarMoviesState />
+        ) : similar.length > 0 ? (
+          <HorizontalScrollContainer>
+            {similar.slice(0, 10).map((similarMovie) => (
+              <CompactMovieCard key={similarMovie.id} movie={similarMovie} />
+            ))}
+          </HorizontalScrollContainer>
+        ) : (
+          <Typography variant="body2" color="text.secondary">
+            No similar movies found
           </Typography>
         )}
       </Box>
