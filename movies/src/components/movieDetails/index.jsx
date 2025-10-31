@@ -14,9 +14,19 @@ import Typography from "@mui/material/Typography";
 import Drawer from "@mui/material/Drawer";
 import Divider from "@mui/material/Divider";
 import MovieReviews from "../movieReviews";
+import { useMovieCredits } from "../../hooks/useMovieCredits";
+import CastCard from "../castCard";
+import { getMovieCredits } from "../../api/tmdb-api";
 
 const MovieDetails = ({ movie }) => {
   const [drawerOpen, setDrawerOpen] = useState(false);
+
+  // Fetch cast data using our custom hook
+  const {
+    cast,
+    isLoading: castLoading,
+    MovieCreditsState,
+  } = useMovieCredits(movie.id, getMovieCredits);
 
   return (
     <Box>
@@ -25,9 +35,60 @@ const MovieDetails = ({ movie }) => {
         <Typography variant="h5" component="h2" fontWeight={600} gutterBottom>
           Overview
         </Typography>
-        <Typography variant="body1" color="text.secondary" sx={{ lineHeight: 1.7 }}>
+        <Typography
+          variant="body1"
+          color="text.secondary"
+          sx={{ lineHeight: 1.7 }}
+        >
           {movie.overview}
         </Typography>
+      </Box>
+
+      <Divider sx={{ my: 3 }} />
+
+      {/* Cast Section - NEW! */}
+      <Box sx={{ mb: 4 }}>
+        <Typography variant="h6" fontWeight={600} gutterBottom>
+          🎭 Cast
+        </Typography>
+
+        {castLoading ? (
+          // Show skeleton loaders while fetching
+          <MovieCreditsState />
+        ) : cast.length > 0 ? (
+          // Horizontal scrollable cast cards
+          <Box
+            sx={{
+              display: "flex",
+              gap: 2,
+              overflowX: "auto",
+              pb: 2,
+              "&::-webkit-scrollbar": {
+                height: 8,
+              },
+              "&::-webkit-scrollbar-track": {
+                backgroundColor: "action.hover",
+                borderRadius: 4,
+              },
+              "&::-webkit-scrollbar-thumb": {
+                backgroundColor: "action.active",
+                borderRadius: 4,
+                "&:hover": {
+                  backgroundColor: "action.selected",
+                },
+              },
+            }}
+          >
+            {cast.slice(0, 10).map((actor) => (
+              <CastCard key={actor.id} actor={actor} />
+            ))}
+          </Box>
+        ) : (
+          // Fallback if no cast data
+          <Typography variant="body2" color="text.secondary">
+            No cast information available
+          </Typography>
+        )}
       </Box>
 
       <Divider sx={{ my: 3 }} />
@@ -54,7 +115,9 @@ const MovieDetails = ({ movie }) => {
       {movie.production_countries?.length > 0 && (
         <Box sx={{ mb: 3 }}>
           <Typography variant="h6" fontWeight={600} gutterBottom>
-            <PublicIcon sx={{ fontSize: 20, mr: 1, verticalAlign: "text-bottom" }} />
+            <PublicIcon
+              sx={{ fontSize: 20, mr: 1, verticalAlign: "text-bottom" }}
+            />
             Production Countries
           </Typography>
           <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
@@ -104,7 +167,8 @@ const MovieDetails = ({ movie }) => {
                 Rating:
               </Typography>
               <Typography variant="body2" color="text.secondary">
-                {movie.vote_average.toFixed(1)} ({movie.vote_count.toLocaleString()} votes)
+                {movie.vote_average.toFixed(1)} (
+                {movie.vote_count.toLocaleString()} votes)
               </Typography>
             </Box>
 
