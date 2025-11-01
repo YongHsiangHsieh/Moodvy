@@ -8,7 +8,7 @@ function MovieListPageTemplate({ movies, title, action }) {
   const [nameFilter, setNameFilter] = useState("");
   const [genreFilter, setGenreFilter] = useState("0");
   const [ratingFilter, setRatingFilter] = useState([0, 10]);
-  const [yearFilter, setYearFilter] = useState({ from: "", to: "" });
+  const [yearFilter, setYearFilter] = useState("");
   const genreId = Number(genreFilter);
 
   let displayedMovies = movies
@@ -17,6 +17,21 @@ function MovieListPageTemplate({ movies, title, action }) {
     })
     .filter((m) => {
       return genreId > 0 ? m.genre_ids.includes(genreId) : true;
+    })
+    .filter((m) => {
+      const rating = m.vote_average || 0;
+      return rating >= ratingFilter[0] && rating <= ratingFilter[1];
+    })
+    .filter((m) => {
+      if (!yearFilter) return true;
+      const releaseYear = m.release_date
+        ? new Date(m.release_date).getFullYear()
+        : null;
+      const fromYear = Number(yearFilter);
+      const currentYear = new Date().getFullYear();
+
+      if (!releaseYear) return false;
+      return releaseYear >= fromYear && releaseYear <= currentYear;
     });
 
   const handleChange = (type, value) => {
