@@ -11,6 +11,7 @@ import PopularMoviesPage from "./pages/popularMoviesPage";
 import TopRatedMoviesPage from "./pages/topRatedMoviesPage";
 import NowPlayingMoviesPage from "./pages/nowPlayingMoviesPage";
 import ActorDetailsPage from "./pages/actorDetailsPage";
+import SearchResultsPage from "./pages/searchResultsPage";
 import SiteHeader from "./components/siteHeader";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
@@ -64,6 +65,10 @@ const App = () => {
               <Route
                 path={ROUTES.ACTORS.DETAILS}
                 element={<ActorDetailsPage />}
+              />
+              <Route
+                path={ROUTES.SEARCH.RESULTS}
+                element={<SearchResultsPage />}
               />
               <Route path={ROUTES.HOME} element={<HomePage />} />
               <Route
