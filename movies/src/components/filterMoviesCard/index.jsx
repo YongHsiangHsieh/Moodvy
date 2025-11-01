@@ -181,6 +181,53 @@ export default function FilterMoviesCard(props) {
             }}
           />
         </Box>
+
+        <Box
+          sx={{
+            flex: 1,
+            minWidth: 200,
+            display: "flex",
+            gap: 1,
+            alignItems: "flex-end",
+          }}
+        >
+          <TextField
+            label="Year From"
+            type="number"
+            size="small"
+            value={props.yearFilter?.from || ""}
+            onChange={(e) =>
+              handleChange(e, "year", {
+                ...props.yearFilter,
+                from: e.target.value,
+              })
+            }
+            inputProps={{
+              min: 1900,
+              max: new Date().getFullYear() + 5,
+              "aria-label": "Filter by year from",
+            }}
+            sx={{ flex: 1 }}
+          />
+          <TextField
+            label="Year To"
+            type="number"
+            size="small"
+            value={props.yearFilter?.to || ""}
+            onChange={(e) =>
+              handleChange(e, "year", {
+                ...props.yearFilter,
+                to: e.target.value,
+              })
+            }
+            inputProps={{
+              min: 1900,
+              max: new Date().getFullYear() + 5,
+              "aria-label": "Filter by year to",
+            }}
+            sx={{ flex: 1 }}
+          />
+        </Box>
       </Box>
     </Paper>
   );
