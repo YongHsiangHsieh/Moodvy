@@ -86,4 +86,16 @@ export const QUERY_KEYS = {
    * @param {string|number} id - Person ID
    */
   PERSON_CREDITS: (id) => ["personCredits", { id }],
+
+  /**
+   * Query key for searching movies by query string
+   * @param {string} query - Search query string
+   */
+  SEARCH_MOVIES: (query) => ["searchMovies", { query }],
+
+  /**
+   * Query key for searching people (actors/directors) by query string
+   * @param {string} query - Search query string
+   */
+  SEARCH_PEOPLE: (query) => ["searchPeople", { query }],
 };
