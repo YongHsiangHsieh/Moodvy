@@ -35,3 +35,11 @@ export const extractIdFromQueryKey = (queryKey) => {
   return idPart?.id;
 };
 
+/**
+ * Helper to extract search query from React Query queryKey
+ * Handles the common pattern of { queryKey: ['key', { query }] }
+ */
+export const extractSearchQueryFromQueryKey = (queryKey) => {
+  const [, queryPart] = queryKey;
+  return queryPart?.query;
+};

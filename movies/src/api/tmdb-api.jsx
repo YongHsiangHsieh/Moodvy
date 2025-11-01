@@ -1,4 +1,8 @@
-import { apiClient, extractIdFromQueryKey } from "./client";
+import {
+  apiClient,
+  extractIdFromQueryKey,
+  extractSearchQueryFromQueryKey,
+} from "./client";
 
 /**
  * TMDB API Functions
@@ -157,7 +161,7 @@ export const getPersonMovieCredits = ({ queryKey }) => {
  * @param {Object} args - React Query args with queryKey containing search query
  */
 export const searchMovies = ({ queryKey }) => {
-  const query = extractIdFromQueryKey(queryKey);
+  const query = extractSearchQueryFromQueryKey(queryKey);
   return apiClient("/search/movie", {
     params: {
       query: query,
@@ -172,7 +176,7 @@ export const searchMovies = ({ queryKey }) => {
  * @param {Object} args - React Query args with queryKey containing search query
  */
 export const searchPeople = ({ queryKey }) => {
-  const query = extractIdFromQueryKey(queryKey);
+  const query = extractSearchQueryFromQueryKey(queryKey);
   return apiClient("/search/person", {
     params: {
       query: query,
