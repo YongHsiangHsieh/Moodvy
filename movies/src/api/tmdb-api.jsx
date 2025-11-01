@@ -151,3 +151,33 @@ export const getPersonMovieCredits = ({ queryKey }) => {
   const id = extractIdFromQueryKey(queryKey);
   return apiClient(`/person/${id}/movie_credits`);
 };
+
+/**
+ * Search for movies by query string
+ * @param {Object} args - React Query args with queryKey containing search query
+ */
+export const searchMovies = ({ queryKey }) => {
+  const query = extractIdFromQueryKey(queryKey);
+  return apiClient("/search/movie", {
+    params: {
+      query: query,
+      page: 1,
+      include_adult: false,
+    },
+  });
+};
+
+/**
+ * Search for people (actors/directors) by query string
+ * @param {Object} args - React Query args with queryKey containing search query
+ */
+export const searchPeople = ({ queryKey }) => {
+  const query = extractIdFromQueryKey(queryKey);
+  return apiClient("/search/person", {
+    params: {
+      query: query,
+      page: 1,
+      include_adult: false,
+    },
+  });
+};
