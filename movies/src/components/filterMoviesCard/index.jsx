@@ -1,5 +1,4 @@
 import Card from "@mui/material/Card";
-import CardMedia from "@mui/material/CardMedia";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import InputLabel from "@mui/material/InputLabel";
@@ -9,13 +8,18 @@ import SearchIcon from "@mui/icons-material/Search";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import Box from "@mui/material/Box";
+import Paper from "@mui/material/Paper";
+import InputAdornment from "@mui/material/InputAdornment";
 import Skeleton from "@mui/material/Skeleton";
-import img from "../../images/pexels-dziana-hasanbekava-5480827.jpg";
 import { getGenres } from "../../api/tmdb-api";
 import { useQuery } from "@tanstack/react-query";
 import { QUERY_KEYS } from "../../constants/queryKeys";
+import { useNavigate } from "react-router";
+import { getSearchRoute } from "../../constants/routes";
 
 export default function FilterMoviesCard(props) {
+  const navigate = useNavigate();
+
   const { data, error, isPending, isError } = useQuery({
     queryKey: QUERY_KEYS.GENRES,
     queryFn: getGenres,
@@ -23,24 +27,24 @@ export default function FilterMoviesCard(props) {
 
   if (isPending) {
     return (
-      <Card sx={{ height: "100%" }}>
-        <Skeleton variant="rectangular" height={200} />
-        <CardContent>
-          <Skeleton variant="text" width="60%" height={40} sx={{ mb: 2 }} />
-          <Skeleton variant="rectangular" height={56} sx={{ mb: 2 }} />
-          <Skeleton variant="rectangular" height={56} />
-        </CardContent>
-      </Card>
+      <Paper sx={{ p: 2, mb: 3 }}>
+        <Box sx={{ display: "flex", gap: 2, flexWrap: "wrap" }}>
+          <Skeleton variant="rectangular" width={200} height={56} />
+          <Skeleton variant="rectangular" width={200} height={56} />
+          <Skeleton variant="rectangular" width={200} height={56} />
+        </Box>
+      </Paper>
     );
   }
 
   if (isError) {
     return (
-      <Card sx={{ height: "100%", p: 3, textAlign: "center" }}>
+      <Paper sx={{ p: 3, mb: 3, textAlign: "center" }}>
         <Typography color="error">{error.message}</Typography>
-      </Card>
+      </Paper>
     );
   }
+
   const genres = data.genres;
   if (genres[0].name !== "All") {
     genres.unshift({ id: "0", name: "All" });
@@ -51,7 +55,7 @@ export default function FilterMoviesCard(props) {
     props.onUserInput(type, value);
   };
 
-  const handleTextChange = (e, props) => {
+  const handleTextChange = (e) => {
     handleChange(e, "name", e.target.value);
   };
 
@@ -59,55 +63,67 @@ export default function FilterMoviesCard(props) {
     handleChange(e, "genre", e.target.value);
   };
 
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    const query = formData.get("search");
+    if (query?.trim()) {
+      navigate(getSearchRoute(query.trim()));
+    }
+  };
+
   return (
-    <Card
+    <Paper
+      elevation={1}
       sx={{
-        height: "100%",
-        display: "flex",
-        flexDirection: "column",
+        p: 2,
+        mb: 3,
+        background: (theme) =>
+          `linear-gradient(135deg, ${theme.palette.primary.main}08 0%, ${theme.palette.secondary.main}08 100%)`,
       }}
     >
-      <CardMedia
+      <Box
         sx={{
-          height: 200,
-          position: "relative",
-          "&::after": {
-            content: '""',
-            position: "absolute",
-            top: 0,
-            left: 0,
-            width: "100%",
-            height: "100%",
-            background: "linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(0,0,0,0.6))",
-          },
+          display: "flex",
+          flexDirection: { xs: "column", md: "row" },
+          gap: 2,
+          alignItems: { xs: "stretch", md: "center" },
         }}
-        image={img}
-        title="Filter Movies"
-      />
-      <CardContent sx={{ flexGrow: 1 }}>
-        <Box sx={{ display: "flex", alignItems: "center", mb: 3 }}>
-          <SearchIcon
-            sx={{ fontSize: 32, mr: 1, color: "primary.main" }}
+      >
+        <Box component="form" onSubmit={handleSearchSubmit} sx={{ flex: 1 }}>
+          <TextField
+            fullWidth
+            name="search"
+            placeholder="Search movies or actors..."
+            type="search"
+            size="small"
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <SearchIcon />
+                </InputAdornment>
+              ),
+            }}
+            inputProps={{
+              "aria-label": "Search movies or actors",
+            }}
           />
-          <Typography variant="h5" component="h2" fontWeight={600}>
-            Filter Movies
-          </Typography>
         </Box>
 
         <TextField
-          fullWidth
-          id="search-movies"
-          label="Search by title"
+          sx={{ flex: 1 }}
+          id="filter-movies"
+          label="Filter by title"
           type="search"
+          size="small"
           value={props.titleFilter}
           onChange={handleTextChange}
           inputProps={{
-            "aria-label": "Search movies by title",
+            "aria-label": "Filter movies by title",
           }}
-          sx={{ mb: 2 }}
         />
 
-        <FormControl fullWidth>
+        <FormControl sx={{ flex: 1, minWidth: 120 }} size="small">
           <InputLabel id="genre-label">Genre</InputLabel>
           <Select
             labelId="genre-label"
@@ -126,7 +142,7 @@ export default function FilterMoviesCard(props) {
             ))}
           </Select>
         </FormControl>
-      </CardContent>
-    </Card>
+      </Box>
+    </Paper>
   );
 }
