@@ -20,6 +20,9 @@ export const ROUTES = {
   ACTORS: {
     DETAILS: "/actors/:id",
   },
+  SEARCH: {
+    RESULTS: "/search",
+  },
 };
 
 /**
@@ -39,3 +42,10 @@ export const getReviewRoute = (id) => `/reviews/${id}`;
  * @param {string|number} id - Actor/Person ID
  */
 export const getActorRoute = (id) => `/actors/${id}`;
+
+/**
+ * Helper function to build search results route
+ * @param {string} query - Search query string
+ */
+export const getSearchRoute = (query) =>
+  `/search?q=${encodeURIComponent(query)}`;
