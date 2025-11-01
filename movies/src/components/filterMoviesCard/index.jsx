@@ -9,6 +9,7 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
+import Slider from "@mui/material/Slider";
 import InputAdornment from "@mui/material/InputAdornment";
 import Skeleton from "@mui/material/Skeleton";
 import { getGenres } from "../../api/tmdb-api";
@@ -142,6 +143,44 @@ export default function FilterMoviesCard(props) {
             ))}
           </Select>
         </FormControl>
+
+        <Box sx={{ flex: 1, minWidth: 220, px: 2 }}>
+          <Typography
+            variant="caption"
+            color="text.secondary"
+            gutterBottom
+            sx={{ display: "block", mb: 0.5 }}
+          >
+            Rating:{" "}
+            {props.ratingFilter
+              ? `${props.ratingFilter[0]} - ${props.ratingFilter[1]}`
+              : "0 - 10"}
+          </Typography>
+          <Slider
+            value={props.ratingFilter || [0, 10]}
+            onChange={(e, newValue) => handleChange(e, "rating", newValue)}
+            valueLabelDisplay="auto"
+            min={0}
+            max={10}
+            step={0.5}
+            marks={[
+              { value: 0, label: "0" },
+              { value: 5, label: "5" },
+              { value: 10, label: "10" },
+            ]}
+            aria-label="Rating range filter"
+            sx={{
+              mt: 1,
+              "& .MuiSlider-thumb": {
+                width: 20,
+                height: 20,
+              },
+              "& .MuiSlider-mark": {
+                height: 8,
+              },
+            }}
+          />
+        </Box>
       </Box>
     </Paper>
   );
