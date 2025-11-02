@@ -17,6 +17,7 @@ import { useQuery } from "@tanstack/react-query";
 import { QUERY_KEYS } from "../../constants/queryKeys";
 import { useNavigate } from "react-router";
 import { getSearchRoute } from "../../constants/routes";
+import SortMoviesDropdown from "../sortMoviesDropdown";
 
 export default function FilterMoviesCard(props) {
   const navigate = useNavigate();
@@ -71,6 +72,10 @@ export default function FilterMoviesCard(props) {
     if (query?.trim()) {
       navigate(getSearchRoute(query.trim()));
     }
+  };
+
+  const handleSortChange = (value) => {
+    props.onUserInput("sort", value);
   };
 
   return (
@@ -195,6 +200,11 @@ export default function FilterMoviesCard(props) {
             max: new Date().getFullYear(),
             "aria-label": "Filter movies from this year to present",
           }}
+        />
+
+        <SortMoviesDropdown
+          sortOption={props.sortOption}
+          onSortChange={handleSortChange}
         />
       </Box>
     </Paper>
