@@ -3,12 +3,19 @@ import PageHeader from "../pageHeader";
 import FilterCard from "../filterMoviesCard";
 import MovieList from "../movieList";
 import Grid from "@mui/material/Grid";
+import { SORT_OPTIONS } from "../sortMoviesDropdown";
+import {
+  sortMoviesByPopularity,
+  sortMoviesByRating,
+  sortMoviesByReleaseDate,
+} from "../../utils/movie";
 
 function MovieListPageTemplate({ movies, title, action }) {
   const [nameFilter, setNameFilter] = useState("");
   const [genreFilter, setGenreFilter] = useState("0");
   const [ratingFilter, setRatingFilter] = useState([0, 10]);
   const [yearFilter, setYearFilter] = useState("");
+  const [sortOption, setSortOption] = useState(SORT_OPTIONS.NONE);
   const genreId = Number(genreFilter);
 
   let displayedMovies = movies
@@ -34,11 +41,21 @@ function MovieListPageTemplate({ movies, title, action }) {
       return releaseYear >= fromYear && releaseYear <= currentYear;
     });
 
+  // Apply sorting
+  if (sortOption === SORT_OPTIONS.POPULARITY) {
+    displayedMovies = sortMoviesByPopularity(displayedMovies);
+  } else if (sortOption === SORT_OPTIONS.RATING) {
+    displayedMovies = sortMoviesByRating(displayedMovies);
+  } else if (sortOption === SORT_OPTIONS.RELEASE_DATE) {
+    displayedMovies = sortMoviesByReleaseDate(displayedMovies);
+  }
+
   const handleChange = (type, value) => {
     if (type === "name") setNameFilter(value);
     else if (type === "genre") setGenreFilter(value);
     else if (type === "rating") setRatingFilter(value);
     else if (type === "year") setYearFilter(value);
+    else if (type === "sort") setSortOption(value);
   };
 
   return (
@@ -53,6 +70,7 @@ function MovieListPageTemplate({ movies, title, action }) {
           genreFilter={genreFilter}
           ratingFilter={ratingFilter}
           yearFilter={yearFilter}
+          sortOption={sortOption}
         />
       </Grid>
       <Grid container sx={{ flex: "1 1 500px" }}>
