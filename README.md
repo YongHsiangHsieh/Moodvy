@@ -58,6 +58,8 @@ The rubric emphasized "extensive linking of information" - I achieved this by:
 - **Discovery pathways**: Recommendations and similar movies for endless exploration
 - **Sorted data**: Filmographies sorted by popularity to highlight actors' most famous work
 - **Multiple entry points**: Users can start from popular movies, top-rated, or now playing
+- **Search functionality**: Find movies and actors by name across the entire database
+- **Multiple list types**: Favorites and must-watch lists for personalized collections
 
 ### 3. **Building Production-Ready Code**
 
@@ -78,6 +80,8 @@ I focused on:
 - **Categories**: Browse popular, top-rated, and now-playing movies
 - **Search & Filter**: Find movies by genre and rating
 - **Favorites**: Mark and manage your favorite movies
+- **Must Watch List**: Save movies you want to watch later
+- **My List**: Unified view of both favorites and must-watch collections
 - **Upcoming**: Preview movies coming soon to theaters
 
 ### 🎭 Actor Profiles
@@ -93,6 +97,14 @@ I focused on:
 - **Recommendations**: AI-powered movie suggestions based on current selection
 - **Similar Movies**: Find movies with similar themes, genres, or styles
 - **Circular Navigation**: Create exploration loops (Movie → Actor → Movie → Actor...)
+- **Search Integration**: Search for movies and actors, with clickable results linking to detail pages
+
+### 📋 Personal Collections
+
+- **Favorites Page**: Dedicated page showing only your favorite movies with options to remove or write reviews
+- **Must Watch List**: Save movies you plan to watch later with easy add/remove functionality
+- **My List Page**: Unified dashboard displaying both favorites and must-watch collections in separate sections
+- **Persistent Storage**: Collections are maintained in context state throughout your browsing session
 
 ### 🎨 User Experience
 
@@ -101,6 +113,7 @@ I focused on:
 - **Horizontal Scrolling**: Browse cast and recommendations with styled scrollbars
 - **Material Design**: Clean, modern UI with Material-UI components
 - **Error Handling**: Graceful error messages when data is unavailable
+- **Sorting & Filtering**: Sort movies by title, rating, or release date with genre filters
 
 ---
 
@@ -190,18 +203,34 @@ movies/src/
 ├── api/                      # API integration layer
 │   ├── client.js            # Unified fetch client
 │   ├── config.js            # API configuration
-│   └── tmdb-api.jsx         # 15 TMDB endpoint functions
+│   └── tmdb-api.jsx         # 17 TMDB endpoint functions
 │
 ├── components/              # Reusable UI components
 │   ├── actorDetails/        # Actor profile display
+│   ├── cardIcons/           # Action icons for movie cards
+│   │   ├── addToFavorites.jsx
+│   │   ├── addToMustWatch.jsx
+│   │   ├── removeFromFavorites.jsx
+│   │   ├── removeFromMustWatch.jsx
+│   │   └── writeReview.jsx
 │   ├── castCard/            # Actor card in cast lists
 │   ├── compactMovieCard/    # Compact movie card (recommendations)
+│   ├── filterMoviesCard/    # Genre filtering component
 │   ├── horizontalScrollContainer/ # Reusable scroll wrapper
 │   ├── movieCard/           # Full-size movie card
 │   ├── movieDetails/        # Movie detail sections
+│   ├── movieList/           # Movie list display
+│   ├── movieReview/         # Single review display
+│   ├── movieReviews/        # Reviews table/list
 │   ├── pageHeader/          # Page title component
+│   ├── reviewForm/          # Review submission form
 │   ├── siteHeader/          # Navigation bar
+│   ├── sortMoviesDropdown/  # Movie sorting dropdown
+│   ├── templateMovieListPage/ # List page template
+│   ├── templateMoviePage/   # Detail page template
 │   └── skeletons/           # Loading state components
+│       ├── MovieCardSkeleton.jsx
+│       └── MovieListSkeleton.jsx
 │
 ├── constants/               # Centralized constants
 │   ├── queryKeys.js         # React Query cache keys
@@ -213,19 +242,26 @@ movies/src/
 ├── hooks/                   # Custom React hooks
 │   ├── useMovieById.jsx              # Fetch single movie
 │   ├── useMovieCredits.jsx           # Fetch cast/crew
+│   ├── useMovieList.jsx              # Fetch movie lists
 │   ├── useMovieRecommendations.jsx   # Fetch recommendations
 │   ├── useMovieSimilar.jsx           # Fetch similar movies
 │   ├── usePersonDetails.jsx          # Fetch actor bio
-│   └── usePersonMovieCredits.jsx     # Fetch actor filmography
+│   ├── usePersonMovieCredits.jsx     # Fetch actor filmography
+│   └── useSearch.jsx                 # Search movies and people
 │
 ├── pages/                   # Route components (data layer)
 │   ├── homePage.jsx                  # Discover movies
 │   ├── popularMoviesPage.jsx         # Popular category
 │   ├── topRatedMoviesPage.jsx        # Top rated category
 │   ├── nowPlayingMoviesPage.jsx      # Now playing category
+│   ├── upcomingMoviesPage.jsx        # Upcoming releases
 │   ├── movieDetailsPage.jsx          # Movie detail view
 │   ├── actorDetailsPage.jsx          # Actor profile view
-│   └── favoriteMoviesPage.jsx        # User favorites
+│   ├── favoriteMoviesPage.jsx        # User favorites only
+│   ├── myListPage.jsx                # Combined favorites + must-watch
+│   ├── searchResultsPage.jsx         # Search results
+│   ├── movieReviewPage.jsx           # Single review view
+│   └── addMovieReviewPage.jsx        # Write new review
 │
 ├── theme/                   # Material-UI theme customization
 │   ├── index.js             # Theme provider
@@ -327,21 +363,25 @@ npm run preview  # Preview production build locally
 
 ### TMDB Endpoints Used
 
-| Endpoint                      | Purpose            | Hook                      |
-| ----------------------------- | ------------------ | ------------------------- |
-| `/discover/movie`             | Homepage movies    | `useMovieList`            |
-| `/movie/popular`              | Popular movies     | `useMovieList`            |
-| `/movie/top_rated`            | Top rated movies   | `useMovieList`            |
-| `/movie/now_playing`          | Movies in theaters | `useMovieList`            |
-| `/movie/upcoming`             | Upcoming releases  | `useMovieList`            |
-| `/movie/{id}`                 | Movie details      | `useMovieById`            |
-| `/movie/{id}/credits`         | Cast & crew        | `useMovieCredits`         |
-| `/movie/{id}/recommendations` | Recommended movies | `useMovieRecommendations` |
-| `/movie/{id}/similar`         | Similar movies     | `useMovieSimilar`         |
-| `/person/{id}`                | Actor biography    | `usePersonDetails`        |
-| `/person/{id}/movie_credits`  | Actor filmography  | `usePersonMovieCredits`   |
-| `/genre/movie/list`           | Genre list         | Context                   |
-| `/movie/{id}/images`          | Movie posters      | Template                  |
+| Endpoint                      | Purpose                 | Hook                      |
+| ----------------------------- | ----------------------- | ------------------------- |
+| `/discover/movie`             | Homepage movies         | `useMovieList`            |
+| `/movie/popular`              | Popular movies          | `useMovieList`            |
+| `/movie/top_rated`            | Top rated movies        | `useMovieList`            |
+| `/movie/now_playing`          | Movies in theaters      | `useMovieList`            |
+| `/movie/upcoming`             | Upcoming releases       | `useMovieList`            |
+| `/trending/movie/day`         | Trending movies (daily) | `useMovieList`            |
+| `/movie/{id}`                 | Movie details           | `useMovieById`            |
+| `/movie/{id}/credits`         | Cast & crew             | `useMovieCredits`         |
+| `/movie/{id}/recommendations` | Recommended movies      | `useMovieRecommendations` |
+| `/movie/{id}/similar`         | Similar movies          | `useMovieSimilar`         |
+| `/movie/{id}/images`          | Movie posters           | Template                  |
+| `/movie/{id}/reviews`         | User reviews            | Component                 |
+| `/person/{id}`                | Actor biography         | `usePersonDetails`        |
+| `/person/{id}/movie_credits`  | Actor filmography       | `usePersonMovieCredits`   |
+| `/genre/movie/list`           | Genre list              | Context                   |
+| `/search/movie`               | Search movies           | `useSearch`               |
+| `/search/person`              | Search people/actors    | `useSearch`               |
 
 ### Data Caching Strategy
 
@@ -378,6 +418,8 @@ React Query caches all API responses with:
 2. **Reusability saves time**: Components like `HorizontalScrollContainer` used 5+ times
 3. **User experience matters**: Loading states and error handling crucial
 4. **Data quality varies**: Sorting TMDB data improves accuracy
+5. **Feature modularity**: Separating favorites and must-watch lists while providing a unified view improves UX
+6. **Search enhances discovery**: Multi-type search (movies + actors) creates more entry points
 
 ---
 
@@ -385,14 +427,15 @@ React Query caches all API responses with:
 
 ### Potential Features
 
-- 🔍 **Advanced Search**: Multi-criteria search with filters
 - 🎬 **Video Trailers**: Embedded YouTube trailers
 - 📊 **Analytics Dashboard**: User viewing statistics
 - 🌙 **Dark Mode**: Toggle between light/dark themes
-- 🔐 **User Authentication**: Personal accounts and sync
-- 💬 **Social Features**: User reviews and ratings
-- 🎯 **Watchlist**: Track movies to watch
+- 🔐 **User Authentication**: Personal accounts with cloud sync
+- 💬 **Social Features**: Share lists and recommendations with friends
+- 🔔 **Notifications**: Alert when must-watch movies are released
 - 📱 **Mobile App**: React Native version
+- 🎯 **Advanced Filtering**: Filter by decade, runtime, language
+- ⭐ **Personal Ratings**: Rate movies independently of TMDB ratings
 
 ### Technical Improvements
 
