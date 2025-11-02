@@ -21,6 +21,25 @@ import UpcomingMoviesPage from "./pages/upcomingMoviesPage";
 import { ROUTES } from "./constants/routes";
 import theme from "./theme";
 
+/**
+ * Application entry point that sets up the entire Moodvy movie application.
+ *
+ * I configure and initialize all the essential providers, context managers, and routing
+ * infrastructure that the application needs to function. This includes React Query for
+ * data fetching and caching, Material-UI theming for consistent styling, React Router for
+ * navigation, and a custom MoviesContext for managing user movie collections.
+ */
+
+/**
+ * React Query configuration for managing API calls and caching.
+ *
+ * I create a QueryClient with custom default options optimized for the application:
+ * - staleTime (360000ms = 6 hours): Cached data is considered fresh for 6 hours
+ * - refetchInterval (360000ms = 6 hours): Automatically refresh data every 6 hours
+ * - refetchOnWindowFocus: false: Don't refetch when user returns to the window (prevents unnecessary API calls)
+ *
+ * These settings balance between keeping data fresh and minimizing API calls to reduce load.
+ */
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -31,6 +50,21 @@ const queryClient = new QueryClient({
   },
 });
 
+/**
+ * Main application component that orchestrates all providers and routing.
+ *
+ * I wrap the application in multiple providers:
+ * 1. QueryClientProvider - Enables React Query functionality throughout the app
+ * 2. ThemeProvider - Applies Material-UI theme for consistent styling
+ * 3. CssBaseline - Normalizes CSS across browsers
+ * 4. BrowserRouter - Enables React Router functionality
+ * 5. SiteHeader - Global header component visible on all pages
+ * 6. MoviesContextProvider - Makes user movie collections available everywhere
+ * 7. Routes - Defines all application routes and their components
+ * 8. ReactQueryDevtools - Development tool for debugging React Query (only in dev)
+ *
+ * @returns {React.ReactElement} The complete application component with all providers and routes
+ */
 const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
@@ -39,6 +73,8 @@ const App = () => {
         <BrowserRouter>
           <SiteHeader />
           <MoviesContextProvider>
+            {/* I define all application routes here. Each route maps a path to a page component.
+                Routes are organized by feature (movies, reviews, actors, search) for clarity. */}
             <Routes>
               <Route path={ROUTES.MOVIES.MY_LIST} element={<MyListPage />} />
               <Route
@@ -72,6 +108,7 @@ const App = () => {
                 path={ROUTES.REVIEWS.FORM}
                 element={<AddMovieReviewPage />}
               />
+              {/* I redirect any unmatched routes to the home page to prevent 404 errors */}
               <Route path="*" element={<Navigate to={ROUTES.HOME} />} />
             </Routes>
           </MoviesContextProvider>
@@ -82,5 +119,12 @@ const App = () => {
   );
 };
 
+/**
+ * Renders the React application to the DOM.
+ *
+ * I find the root HTML element by its ID and create a React root using the createRoot API
+ * (the modern React 18+ rendering approach). Then I render the App component into that root,
+ * which initializes the entire application with all providers and routing.
+ */
 const rootElement = createRoot(document.getElementById("root"));
 rootElement.render(<App />);

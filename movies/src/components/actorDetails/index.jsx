@@ -12,6 +12,66 @@ import { getActorProfileUrl, sortMoviesByPopularity } from "../../utils/movie";
 import CompactMovieCard from "../compactMovieCard";
 import HorizontalScrollContainer from "../horizontalScrollContainer";
 
+/**
+ * ActorDetails Component
+ *
+ * This component displays comprehensive information about an actor/person, including their
+ * profile image, biography, and filmography. I designed this as a dedicated detail page view
+ * that presents all relevant information in an organized, visually appealing layout.
+ *
+ * Layout Structure:
+ * I organize the component into two main sections:
+ * 1. Profile Section - Displays the actor's photo and biographical information (name, birthdate, birthplace, department)
+ * 2. Filmography Section - Shows a horizontally scrollable list of movies the actor is known for
+ *
+ * Responsive Design:
+ * I use Material-UI's responsive breakpoints (xs, sm, md) to adapt the layout across different
+ * screen sizes. On mobile, the profile photo stacks above the biography. On larger screens, they
+ * display side-by-side for a more efficient use of space.
+ *
+ * Movie Sorting Logic:
+ * I sort the filmography by popularity to highlight the actor's most famous roles first, helping
+ * users quickly find the movies they're most interested in.
+ *
+ * @component
+ * @returns {React.ReactElement} A detailed actor profile page component
+ *
+ * @example
+ * import ActorDetails from './components/actorDetails';
+ *
+ * <ActorDetails
+ *   person={personData}
+ *   movies={filmography}
+ *   FilmographyState={SkeletonComponent}
+ * />
+ */
+
+/**
+ * Renders the actor/person details page with profile information and filmography.
+ *
+ * @function ActorDetails
+ * @param {Object} props - Component props
+ * @param {Object} props.person - The person/actor data object from TMDB API
+ * @param {string} props.person.name - The actor's full name
+ * @param {string} props.person.profile_path - Path to the actor's profile image from TMDB CDN
+ * @param {string} [props.person.biography] - The actor's biography text (may be empty string)
+ * @param {string} [props.person.birthday] - Birth date in ISO format (YYYY-MM-DD)
+ * @param {string} [props.person.place_of_birth] - The actor's birthplace location
+ * @param {string} [props.person.known_for_department] - Primary department (e.g., "Acting", "Directing")
+ *
+ * @param {Array<Object>} props.movies - Array of movie objects representing the actor's filmography
+ * @param {number} props.movies[].id - Unique movie identifier
+ * @param {string} props.movies[].title - Movie title
+ * @param {number} [props.movies[].popularity] - Popularity score used for sorting
+ *
+ * @param {React.ComponentType} props.FilmographyState - A component to display while filmography
+ *                                                       is loading (typically a skeleton/loading state).
+ *                                                       I use this to show a fallback UI when
+ *                                                       no movies are available yet.
+ *
+ * @returns {React.ReactElement} A Material-UI Paper-based layout containing the actor profile
+ *                               and filmography sections
+ */
 const ActorDetails = ({ person, movies, FilmographyState }) => {
   // Sort movies by popularity to show most famous roles first
   const sortedMovies = sortMoviesByPopularity(movies);
@@ -25,7 +85,7 @@ const ActorDetails = ({ person, movies, FilmographyState }) => {
         mx: "auto",
       }}
     >
-      {/* Actor Profile Section */}
+      {/* Actor Profile Section - Displays photo, name, and biographical information */}
       <Paper
         elevation={3}
         sx={{
@@ -36,7 +96,7 @@ const ActorDetails = ({ person, movies, FilmographyState }) => {
         }}
       >
         <Stack direction={{ xs: "column", md: "row" }} spacing={3}>
-          {/* Profile Photo */}
+          {/* Profile Photo Container - I center it on mobile and align left on desktop */}
           <Box
             sx={{
               flexShrink: 0,
@@ -58,7 +118,7 @@ const ActorDetails = ({ person, movies, FilmographyState }) => {
             />
           </Box>
 
-          {/* Biography & Details */}
+          {/* Biography & Details Section - I organize biographical information with icons for visual hierarchy */}
           <Box sx={{ flex: 1, minWidth: 0 }}>
             <Typography
               variant="h4"
@@ -69,7 +129,7 @@ const ActorDetails = ({ person, movies, FilmographyState }) => {
               {person.name}
             </Typography>
 
-            {/* Quick Info Chips */}
+            {/* Quick Info Chips - I display key biographical data with icons for quick scanning */}
             <Stack
               direction="row"
               spacing={1}
@@ -105,7 +165,7 @@ const ActorDetails = ({ person, movies, FilmographyState }) => {
 
             <Divider sx={{ my: 2 }} />
 
-            {/* Biography */}
+            {/* Biography Section - I conditionally render the biography or display a fallback message */}
             {person.biography && (
               <>
                 <Typography
@@ -138,7 +198,7 @@ const ActorDetails = ({ person, movies, FilmographyState }) => {
         </Stack>
       </Paper>
 
-      {/* Filmography Section */}
+      {/* Filmography Section - I display the actor's most notable movies in a horizontally scrollable list */}
       <Paper
         elevation={3}
         sx={{
@@ -155,6 +215,7 @@ const ActorDetails = ({ person, movies, FilmographyState }) => {
           Known For
         </Typography>
 
+        {/* I limit filmography to top 20 movies to avoid overwhelming the UI while showing relevant content */}
         {sortedMovies.length > 0 ? (
           <HorizontalScrollContainer>
             {sortedMovies.slice(0, 20).map((movie) => (

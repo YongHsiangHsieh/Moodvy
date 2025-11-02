@@ -6,19 +6,61 @@ import Paper from "@mui/material/Paper";
 import { QUERY_KEYS } from "../constants/queryKeys";
 
 /**
- * Custom hook for fetching a single movie by ID with loading and error states
- * 
- * @param {string|number} id - The movie ID
- * @param {Function} queryFn - The function to fetch the movie
- * @returns {Object} { movie, isLoading, error, MovieState }
+ * Custom hook for fetching and managing a single movie by its ID.
+ *
+ * I use React Query to handle the fetching logic with built-in caching, and I provide
+ * a reusable MovieState component to display loading and error states. This keeps the
+ * movie data fetching logic separate from the UI components that display it.
+ *
+ * @param {string|number} id - The unique identifier for the movie to fetch
+ * @param {Function} queryFn - A callback function that performs the actual API call
+ *                             to fetch the movie data. It receives the `id` parameter.
+ *
+ * @returns {Object} An object containing:
+ *   - {Object|undefined} movie - The fetched movie data, or undefined if still loading
+ *   - {boolean} isLoading - True while the movie data is being fetched
+ *   - {Error|null} error - Error object if the fetch failed, or null if successful
+ *   - {React.Component} MovieState - A pre-built UI component that renders the appropriate
+ *                                     loading skeleton or error message based on the query state
+ *
+ * @example
+ * // Basic usage in a component
+ * const { movie, isLoading, error, MovieState } = useMovieById(
+ *   movieId,
+ *   () => fetchMovieFromAPI(movieId)
+ * );
+ *
+ * if (isLoading || error) {
+ *   return <MovieState />;
+ * }
+ *
+ * return <div>{movie.title}</div>;
  */
 export const useMovieById = (id, queryFn) => {
-  const { data: movie, error, isPending, isError } = useQuery({
+  const {
+    data: movie,
+    error,
+    isPending,
+    isError,
+  } = useQuery({
     queryKey: QUERY_KEYS.MOVIE(id),
     queryFn: queryFn,
   });
 
-  // Component to render loading/error states
+  /**
+   * Internal React component that renders the current state of the movie query.
+   *
+   * I handle three different states:
+   * 1. Loading state - displays skeleton loaders to show where content will appear
+   * 2. Error state - displays an error message to the user if the fetch failed
+   * 3. Success state - returns null, allowing the calling component to render the actual movie data
+   *
+   * This component encapsulates all the UI logic for handling loading and error states,
+   * making it easy to reuse across different parts of the app without duplicating this code.
+   *
+   * @returns {React.ReactElement|null} A Material-UI Box containing either skeleton loaders,
+   *                                     an error message, or null if the data loaded successfully
+   */
   const MovieState = () => {
     if (isPending) {
       return (
@@ -54,4 +96,3 @@ export const useMovieById = (id, queryFn) => {
     MovieState,
   };
 };
-
