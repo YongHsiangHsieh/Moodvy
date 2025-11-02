@@ -31,10 +31,18 @@ export default function FilterMoviesCard(props) {
   if (isPending) {
     return (
       <Paper sx={{ p: 2, mb: 3 }}>
+        {/* Search bar skeleton */}
+        <Box sx={{ display: "flex", gap: 1, mb: 2 }}>
+          <Skeleton variant="rectangular" height={40} sx={{ flex: 1 }} />
+          <Skeleton variant="rectangular" width={100} height={40} />
+        </Box>
+        {/* Filter controls skeleton */}
         <Box sx={{ display: "flex", gap: 2, flexWrap: "wrap" }}>
-          <Skeleton variant="rectangular" width={200} height={56} />
-          <Skeleton variant="rectangular" width={200} height={56} />
-          <Skeleton variant="rectangular" width={200} height={56} />
+          <Skeleton variant="rectangular" width={200} height={40} />
+          <Skeleton variant="rectangular" width={200} height={40} />
+          <Skeleton variant="rectangular" width={220} height={40} />
+          <Skeleton variant="rectangular" width={120} height={40} />
+          <Skeleton variant="rectangular" width={120} height={40} />
         </Box>
       </Paper>
     );
