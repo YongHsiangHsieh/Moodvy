@@ -6,7 +6,7 @@
 export const ROUTES = {
   HOME: "/",
   MOVIES: {
-    FAVORITES: "/movies/favorites",
+    MY_LIST: "/movies/my-list",
     UPCOMING: "/movies/upcoming",
     POPULAR: "/movies/popular",
     TOP_RATED: "/movies/top_rated",

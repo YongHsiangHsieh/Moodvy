@@ -5,7 +5,7 @@ import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import HomePage from "./pages/homePage";
 import MoviePage from "./pages/movieDetailsPage";
-import FavoriteMoviesPage from "./pages/favoriteMoviesPage";
+import MyListPage from "./pages/myListPage";
 import MovieReviewPage from "./pages/movieReviewPage";
 import PopularMoviesPage from "./pages/popularMoviesPage";
 import TopRatedMoviesPage from "./pages/topRatedMoviesPage";
@@ -40,10 +40,7 @@ const App = () => {
           <SiteHeader />
           <MoviesContextProvider>
             <Routes>
-              <Route
-                path={ROUTES.MOVIES.FAVORITES}
-                element={<FavoriteMoviesPage />}
-              />
+              <Route path={ROUTES.MOVIES.MY_LIST} element={<MyListPage />} />
               <Route
                 path={ROUTES.MOVIES.UPCOMING}
                 element={<UpcomingMoviesPage />}
