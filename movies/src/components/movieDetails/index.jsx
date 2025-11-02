@@ -25,6 +25,7 @@ import {
   getMovieRecommendations,
   getMovieSimilar,
 } from "../../api/tmdb-api";
+import { sortMoviesByPopularity } from "../../utils/movie";
 
 const MovieDetails = ({ movie }) => {
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -49,6 +50,10 @@ const MovieDetails = ({ movie }) => {
     isLoading: similarLoading,
     SimilarMoviesState,
   } = useMovieSimilar(movie.id, getMovieSimilar);
+
+  // Sort recommendations and similar movies by popularity (consistent with actor filmography)
+  const sortedRecommendations = sortMoviesByPopularity(recommendations);
+  const sortedSimilar = sortMoviesByPopularity(similar);
 
   return (
     <Box>
@@ -195,7 +200,7 @@ const MovieDetails = ({ movie }) => {
           <RecommendationsState />
         ) : recommendations.length > 0 ? (
           <HorizontalScrollContainer>
-            {recommendations.slice(0, 10).map((recommendedMovie) => (
+            {sortedRecommendations.slice(0, 10).map((recommendedMovie) => (
               <CompactMovieCard
                 key={recommendedMovie.id}
                 movie={recommendedMovie}
@@ -219,7 +224,7 @@ const MovieDetails = ({ movie }) => {
           <SimilarMoviesState />
         ) : similar.length > 0 ? (
           <HorizontalScrollContainer>
-            {similar.slice(0, 10).map((similarMovie) => (
+            {sortedSimilar.slice(0, 10).map((similarMovie) => (
               <CompactMovieCard key={similarMovie.id} movie={similarMovie} />
             ))}
           </HorizontalScrollContainer>
