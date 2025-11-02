@@ -4,6 +4,7 @@ import Typography from "@mui/material/Typography";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
 import SearchIcon from "@mui/icons-material/Search";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
@@ -88,6 +89,43 @@ export default function FilterMoviesCard(props) {
           `linear-gradient(135deg, ${theme.palette.primary.main}08 0%, ${theme.palette.secondary.main}08 100%)`,
       }}
     >
+      {/* Search Bar - Separate Row */}
+      <Box
+        component="form"
+        onSubmit={handleSearchSubmit}
+        sx={{
+          display: "flex",
+          gap: 1,
+          mb: 2,
+        }}
+      >
+        <TextField
+          fullWidth
+          name="search"
+          placeholder="Search movies or actors..."
+          type="search"
+          size="small"
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <SearchIcon />
+              </InputAdornment>
+            ),
+          }}
+          inputProps={{
+            "aria-label": "Search movies or actors",
+          }}
+        />
+        <Button
+          type="submit"
+          variant="contained"
+          sx={{ minWidth: 100, textTransform: "none" }}
+        >
+          Search
+        </Button>
+      </Box>
+
+      {/* Filter Controls - Second Row */}
       <Box
         sx={{
           display: "flex",
@@ -96,26 +134,6 @@ export default function FilterMoviesCard(props) {
           alignItems: { xs: "stretch", md: "center" },
         }}
       >
-        <Box component="form" onSubmit={handleSearchSubmit} sx={{ flex: 1 }}>
-          <TextField
-            fullWidth
-            name="search"
-            placeholder="Search movies or actors..."
-            type="search"
-            size="small"
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <SearchIcon />
-                </InputAdornment>
-              ),
-            }}
-            inputProps={{
-              "aria-label": "Search movies or actors",
-            }}
-          />
-        </Box>
-
         <TextField
           sx={{ flex: 1 }}
           id="filter-movies"
